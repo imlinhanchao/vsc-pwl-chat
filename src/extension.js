@@ -11,8 +11,8 @@ const Command = require('./command')
  */
 function activate(context) {
 	let commands = Command.commands;
-	Command.context = context;
-	commands.forEach( c => context.subscriptions.push(vscode.commands.registerCommand(`pwl-chat.${c}`, Command[c])))
+	let command = new Command(context);
+	commands.forEach( c => context.subscriptions.push(vscode.commands.registerCommand(`pwl-chat.${c}`, command[c])))
 }
 
 // this method is called when your extension is deactivated
