@@ -1,10 +1,17 @@
 import * as crypto from 'crypto';
-import {FormData} from 'formdata-node';
-import fetch, { FetchError } from 'node-fetch';
+import { FormData } from 'formdata-node';
+import axios, { AxiosInstance } from 'axios';
+import * as http from 'http';
+import * as https from 'https';
 
 class PWL {
     token:string = '';
+    axios:AxiosInstance;
     constructor(token:string) {
+        this.axios = axios.create({
+            baseURL: 'https://pwl.icu/',
+            timeout: 20000,
+        });
         if (!token) { return; }
         this.token = token;
     }
@@ -247,17 +254,25 @@ class PWL {
             data = undefined
         } = opt;
 
-        let body = data instanceof FormData ? data : data && JSON.stringify(data);
-            
+        headers['User-Agent'] =
+            'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36';
+        headers['Referer'] = 'https://pwl.icu/';
+
         let options = {
-            method, headers, body,
+            url, method, headers, data,
+            httpAgent: new http.Agent({
+                keepAlive: true
+            }),
+            httpsAgent: new https.Agent({
+                keepAlive: true,
+                rejectUnauthorized: false,
+            }),
         };
     
         let rsp:any;
         try {
-            rsp = await fetch(`https://pwl.icu/${url}`, options);
-            try{ rsp.data = await rsp.clone().json(); } catch(e) {}
-            rsp.raw = await rsp.clone().text();
+            rsp = await this.axios.request(options);
+    
             return rsp;
         } catch (err) {
             let e = err as any;
