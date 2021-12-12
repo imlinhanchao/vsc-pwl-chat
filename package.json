@@ -19,7 +19,25 @@
         "command": "pwl.helloWorld",
         "title": "Hello World"
       }
-    ]
+    ],
+    "viewsContainers": {
+			"activitybar": [
+				{
+					"id": "pwl-chat-view",
+					"title": "摸魚派聊天室",
+					"icon": "src/assets/logo.svg"
+				}
+			]
+		},
+		"views": {
+			"pwl-chat-view": [
+				{
+					"id": "pwl-chat",
+					"name": "摸魚派聊天室",
+					"icon": "src/assets/logo.svg"
+				}
+			]
+		}
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
