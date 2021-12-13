@@ -33,7 +33,7 @@ class Command
 
             this.token = data.Key;
             this.context.globalState.update('token', this.token);
-            this.info = await this.pwl.info(this.token);
+            this.info = await this.pwl.info();
 
             
 

@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import ReconnectingWebSocket from "reconnecting-websocket";
 import MessageItem from "./MessageItem.vue";
 
 export default {
@@ -68,30 +67,16 @@ export default {
             this.page = page;
         },
         wsInit() {
-            let that = this;
-            if (this.rws != null) this.rws.close();
-            this.rws = new ReconnectingWebSocket(`wss://pwl.icu/chat-room-channel?apiKey=${this.$root.token}`);
-            this.rws.reconnectInterval = 10000
-
-            this.rws.onopen = (e) => {
-                console.log("onopen");
-                setInterval(() => {
-                    that.rws.send('-hb-')
-                }, 1000 * 60 * 3)
-            }
-            this.rws.onmessage = (e) => {
-                that.wsMessage(e)
-            }
-            this.rws.onerror = (e) => {
-                console.log("onerror");
-
-            }
-            this.rws.onclose = (e) => {
-                console.log("onclose");
-            }
+            this.$root.request('websocketInit');
+            window.addEventListener('message', this.wsListener);
         },
-        wsMessage(e) {
-            let msg = JSON.parse(e.data)
+        wsListener(event) {
+            const message = event.data;
+            if (message.type != 'websocket') return;
+            this.wsMessage(message);
+        },
+        wsMessage(ev) {
+            let msg = JSON.parse(ev.data)
             
             switch (msg.type) {
                 case "online":  //在线人数

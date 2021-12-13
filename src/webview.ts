@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import PWL from './lib/pwl';
+import Utils from "./lib/utils";
 
 class ChatViewProvider implements vscode.WebviewViewProvider {
 
@@ -33,6 +34,17 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 
 		webviewView.webview.onDidReceiveMessage(async req => {
 			let pwl:any = this._pwl;
+			switch (req.type)
+			{
+				case 'websocketInit':
+					pwl.websocketInit((ev:MessageEvent) => {
+						this._view?.webview.postMessage({ type: 'websocket', data: ev.data});
+					});
+					return;
+				case 'showbox':
+					Utils.showMessage(req.data);
+					return;
+			}
 			if (!pwl || !pwl[req.type]) { return; }
 			req.rsp = await pwl[req.type](req.data);
 			req.type = 'response';
@@ -41,11 +53,11 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	private getHtml(webview: vscode.Webview) {
-		let state = fs.statSync(path.resolve(__dirname, '..', 'dev'));
-		let mainHtml = state ? 
+		let exists = false;//fs.existsSync(path.resolve(__dirname, '..', 'dev'));
+		let mainHtml = exists ? 
 			path.resolve(__dirname, '..', 'dev', 'index.html') : 
 			path.resolve(__dirname, 'webview', 'index.html');
-		let baseUrl = state ?
+		let baseUrl = exists ?
 			vscode.Uri.joinPath(this._extensionUri, 'dev', '/') :
 			vscode.Uri.joinPath(this._extensionUri, 'out', 'webview', '/');
 

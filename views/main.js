@@ -10,6 +10,7 @@ Vue.config.productionTip = false;
 new Vue({
   render: h => h(App),
   data: {
+    wsCallback: [],
     callback: {},
     isdev: !window.acquireVsCodeApi
   },
@@ -34,7 +35,7 @@ new Vue({
       return new Promise((resolve) => {
         let message = { data };
         message.realType = message.type = method;
-        if (this.isdev) message.type = 'forward';
+        if (this.isdev) { message.type = 'forward'; }
         message.key = message.type + parseInt(Math.random() * 10000).toString();
         this.callback[message.key] = (rsp) => {
           resolve(rsp);

@@ -14,11 +14,10 @@ window.addEventListener('message', event => {
                 vscode.postMessage(message);
                 break;
             }
-        case 'response':
+        default:
             {
                 main.postMessage(message, '*');
                 break;
             }
-
     }
 });

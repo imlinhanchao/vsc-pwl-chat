@@ -1,7 +1,7 @@
 {
-  "name": "pwl",
-  "displayName": "PWL",
-  "description": "摸鱼派客户端",
+  "name": "pwl-chat",
+  "displayName": "摸鱼派聊天室",
+  "description": "随时随地摸鱼聊天 https://pwl.icu/",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.62.0"
@@ -10,14 +10,19 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:pwl-chat.chatView"
+    "onView:pwl-chat.chatView",
+    "onCommand:pwl-chat.login"
   ],
+  "publisher": "hancel",
+  "license": "MIT",
+  "icon": "media/logo.png",
   "main": "./out/extension.js",
+  "repository": "https://github.com/imlinhanchao/vsc-pwl-chat",
   "contributes": {
     "commands": [
       {
         "command": "pwl-chat.login",
-        "title": "登录摸鱼派"
+        "title": "登录摸鱼派(PWL Chatroom Login)"
       }
     ],
     "viewsContainers": {
@@ -54,6 +59,7 @@
     "@types/mocha": "^9.0.0",
     "@types/node": "14.x",
     "@types/vscode": "^1.62.0",
+    "@types/ws": "^8.2.2",
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",
     "@vscode/test-electron": "^1.6.2",
@@ -76,6 +82,7 @@
     "formdata-node": "^4.3.1",
     "got": "^11.8.3",
     "got-fetch": "^4.0.1",
-    "reconnecting-websocket": "^4.4.0"
+    "reconnecting-websocket": "^4.4.0",
+    "ws": "^8.3.0"
   }
 }

@@ -2,10 +2,14 @@ import * as crypto from 'crypto';
 import { FormData } from 'formdata-node';
 import { fetch } from 'got-fetch';
 import * as https from 'https';
+import ReconnectingWebSocket from "reconnecting-websocket";
+import WS from 'ws';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 class PWL {
     token:string = '';
+    rws:ReconnectingWebSocket|null = null;
+    private _timer:NodeJS.Timeout | null = null;
     constructor(token:string) {
         if (!token) { return; }
         this.token = token;
@@ -236,6 +240,30 @@ class PWL {
         } catch (e) {
             return { code: -1, msg: (e as Error).message };
         }
+    }
+
+    websocketInit(wsCallback:Function) {
+        if (this.rws !== null) { this.rws.close(); }
+        this.rws = new ReconnectingWebSocket(`wss://pwl.icu/chat-room-channel?apiKey=${this.token}`, null, {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            WebSocket: WS,
+            reconnectInterval: 10000
+        });
+
+        this.rws.onopen = (e) => {
+            console.log("onopen");
+            if(this._timer) { clearInterval(this._timer); }
+            this._timer = setInterval(() => {
+                this.rws?.send('-hb-');
+            }, 1000 * 60 * 3);
+        };
+        this.rws.onmessage = (e) => {
+            wsCallback(e);
+        };
+        this.rws.onerror = (e) => {
+        };
+        this.rws.onclose = (e) => {
+        };
     }
 
     async request(opt:any) {

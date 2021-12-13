@@ -227,8 +227,24 @@ function noticeComment(context: vscode.ExtensionContext) {
     }
 }
 
+function showMessage(data:any) {
+    switch(data.type)
+    {
+        case 'error':
+            vscode.window.showErrorMessage(data.message);
+            break;
+        case 'warning':
+            vscode.window.showWarningMessage(data.message);
+            break;
+        case 'info':
+            vscode.window.showInformationMessage(data.message);
+            break;
+    }
+}
+
 export default {
     showProgress,
+    showMessage,
     getConfig,
     getPasteImage,
     getCurrentRoot,
