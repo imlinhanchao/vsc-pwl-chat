@@ -23,6 +23,10 @@
       {
         "command": "pwl-chat.login",
         "title": "登录摸鱼派(PWL Chatroom Login)"
+      },
+      {
+        "command": "pwl-chat.logout",
+        "title": "摸鱼派注销登录(PWL Chatroom Logout)"
       }
     ],
     "viewsContainers": {
@@ -50,7 +54,6 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },

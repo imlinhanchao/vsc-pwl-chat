@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import Command from './command';
 import PWL from './lib/pwl';
 import Utils from "./lib/utils";
 
@@ -12,8 +13,11 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 
 	constructor(
 		private readonly _extensionUri: vscode.Uri,
-		private _pwl: PWL
-	) { }
+		private _pwl: PWL,
+		private _command: Command
+	) { 
+
+	}
 
 	public resolveWebviewView(
 		webviewView: vscode.WebviewView,
@@ -21,6 +25,7 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 		_token: vscode.CancellationToken,
 	) {
 		this._view = webviewView;
+		this._command.setWebview(this._view?.webview);
 
 		webviewView.webview.options = {
 			enableScripts: true,
@@ -44,6 +49,12 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 				case 'showbox':
 					Utils.showMessage(req.data);
 					return;
+				case 'command':
+					if ((this._command as any)[req.data.cmd]) {
+						req.rsp = await (this._command as any)[req.data.cmd](req.data.data);
+						req.type = 'response';
+						this._view?.webview.postMessage(req);			
+					}
 			}
 			if (!pwl || !pwl[req.type]) { return; }
 			req.rsp = await pwl[req.type](req.data);
@@ -53,7 +64,7 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	private getHtml(webview: vscode.Webview) {
-		let exists = false;//fs.existsSync(path.resolve(__dirname, '..', 'dev'));
+		let exists = fs.existsSync(path.resolve(__dirname, '..', 'dev'));
 		let mainHtml = exists ? 
 			path.resolve(__dirname, '..', 'dev', 'index.html') : 
 			path.resolve(__dirname, 'webview', 'index.html');

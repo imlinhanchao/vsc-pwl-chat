@@ -68,6 +68,7 @@ export default {
         },
         wsInit() {
             this.$root.request('websocketInit');
+            window.removeEventListener('message', this.wsListener);
             window.addEventListener('message', this.wsListener);
         },
         wsListener(event) {

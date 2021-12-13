@@ -140,14 +140,6 @@ export default {
   }
 }
 
-.arrow {
-  border: 5px solid transparent;
-  border-right: 5px solid var(--vscode-button-foreground);
-  width: 0;
-  margin-top: 15px;
-  height: 0;
-}
-
 .msg-content {
   background-color: var(--vscode-button-foreground);
   border-radius: 5px;

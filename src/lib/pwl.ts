@@ -244,10 +244,10 @@ class PWL {
 
     websocketInit(wsCallback:Function) {
         if (this.rws !== null) { this.rws.close(); }
-        this.rws = new ReconnectingWebSocket(`wss://pwl.icu/chat-room-channel?apiKey=${this.token}`, null, {
+        this.rws = new ReconnectingWebSocket(`wss://pwl.icu/chat-room-channel?apiKey=${this.token}`, [], {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             WebSocket: WS,
-            reconnectInterval: 10000
+            connectionTimeout: 10000
         });
 
         this.rws.onopen = (e) => {

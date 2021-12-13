@@ -173,11 +173,12 @@ function confirm(message: string, options: string[]) : Promise<string|undefined>
     });
 }
 
-function prompt(message: string, defaultVal: string = '') : Promise<string|undefined> {
+function prompt(message: string, defaultVal: string = '', password: boolean = false) : Promise<string|undefined> {
     return new Promise((resolve, reject) => {
         return vscode.window.showInputBox({
             value: defaultVal,
-            prompt: message
+            prompt: message,
+            password
         }).then(resolve);
     });
 }

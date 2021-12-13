@@ -7,7 +7,7 @@ export function activate(context: vscode.ExtensionContext) {
 	let command = new Command(context);
 	commands.forEach( c => context.subscriptions.push(vscode.commands.registerCommand(`pwl-chat.${c}`, () => (command as any)[c](...arguments))));
 
-	const provider = new ChatViewProvider(context.extensionUri, command.pwl);
+	const provider = new ChatViewProvider(context.extensionUri, command.pwl, command);
 
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(ChatViewProvider.viewType, provider));
