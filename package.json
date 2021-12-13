@@ -34,7 +34,7 @@
         {
           "id": "pwl-chat-view",
           "title": "摸鱼派聊天室",
-          "icon": "src/assets/logo.svg"
+          "icon": "media/logo.svg"
         }
       ]
     },

@@ -202,22 +202,6 @@ export default {
   visibility: hidden;
   position: absolute;
 }
-
-.msg-current {
-  .redpacket-item {
-    flex-direction: row-reverse;
-    .arrow {
-      border-right-color: transparent;
-      border-left-color: #f90;
-    }
-    &.redpacket-empty {
-      .arrow {
-        border-right-color: transparent;
-        border-left-color: #fecd41;
-      }
-    }
-  }
-}
 </style>
 <style lang="less">
 .msg-img {
