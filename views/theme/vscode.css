@@ -550,10 +550,6 @@ form > * {
 	outline-color: var(--vscode-focusBorder) !important;
 }
 
-a {
-	color: var(--vscode-textLink-foreground);
-}
-
 a:hover,
 a:active {
 	color: var(--vscode-textLink-activeForeground);

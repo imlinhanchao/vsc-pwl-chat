@@ -42,3 +42,42 @@ img {
 	max-width: 100%;
 	height: auto;
 }
+
+html {
+    height: 100%;
+}
+
+input, select, textarea, button {
+    font: inherit;
+}
+
+a {
+    color: inherit;
+	text-decoration: none;
+}
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.39);
+}
+
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+i.fa-help {
+    color: green;
+    float:right;
+    margin-right: 5px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+:focus {
+    outline: none;
+}

@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import MessageBox from "@/components/MessageBox.vue";
-import MessageList from "@/components/MessageList.vue";
+import MessageBox from "./components/MessageBox.vue";
+import MessageList from "./components/MessageList.vue";
 
 export default {
   name: 'App',
@@ -19,10 +19,11 @@ export default {
 
 <style lang="less">
 .md-style {
-  * {
-    margin-inline-start: 0;
-    margin-inline-end: 0;
-  }
+    * {
+        margin-inline-start: 0;
+        margin-inline-end: 0;
+        line-height: 1.5;
+    }
     a {
         border-bottom: 1px dashed #17233d;
     }

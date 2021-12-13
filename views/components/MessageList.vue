@@ -13,8 +13,8 @@
                 <div class="arrow" v-if="item.content.replace(/\n/g, '').match(/>[^<]+?</g)" />
                 <div class="msg-content md-style" v-html="formatContent(item.content)" 
                     v-if="item.content.replace(/\n/g, '').match(/>[^<]+?</g)"/>
-                    <span class="msg-img" v-if="!item.content.replace(/\n/g, '').match(/>[^<]+?</g)"
-                    v-html="formatContent(item.content)"></span>
+                <span class="msg-img" v-if="!item.content.replace(/\n/g, '').match(/>[^<]+?</g)"
+                v-html="formatContent(item.content)"></span>
             </div>
             </div>
         </div>
@@ -47,7 +47,8 @@ export default {
         };
     },
     mounted() {
-        this.load(this.page);
+        this.load(1);
+        this.load(2);
     },
     methods: {
         async load(page) {
@@ -212,6 +213,14 @@ export default {
                 border-left-color: #fecd41;
             }
         }
+    }
+}
+.msg-img {
+    img {
+        max-width: 80vw;
+    }
+    [alt="图片表情"] {
+        max-width: 100px;
     }
 }
 </style>
