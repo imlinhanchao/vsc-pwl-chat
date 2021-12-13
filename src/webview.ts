@@ -43,12 +43,12 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	private getHtml(webview: vscode.Webview) {
-		let state = fs.statSync(path.resolve(__dirname, '..', 'src', 'dev'));
+		let state = false;//fs.statSync(path.resolve(__dirname, '..', 'dev'));
 		let mainHtml = state ? 
-			path.resolve(__dirname, '..', 'src', 'dev', 'index.html') : 
+			path.resolve(__dirname, '..', 'dev', 'index.html') : 
 			path.resolve(__dirname, 'webview', 'index.html');
 		let baseUrl = state ?
-			vscode.Uri.joinPath(this._extensionUri, 'src', 'dev', '/') :
+			vscode.Uri.joinPath(this._extensionUri, 'dev', '/') :
 			vscode.Uri.joinPath(this._extensionUri, 'out', 'webview', '/');
 
 		return fs.readFileSync(mainHtml).toString().replace(/<base href="[^"]*">/, 
@@ -56,7 +56,7 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 			.replace(/<(script|link) /g, '<$1 nonce="vuescript" ')
 			.replace(/<head>/, `<head>
 				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; 
-				img-src *; style-src http://* https://* 'unsafe-inline'; frame-src *;script-src 'nonce-vuescript';">`);
+				img-src *; font-src http://* https://*; style-src http://* https://* 'unsafe-inline'; frame-src *;script-src 'nonce-vuescript';">`);
 	}
 }
 

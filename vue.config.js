@@ -1,8 +1,8 @@
 module.exports = {
     pages: {
         index: {
-            entry: 'src/views/main.js',
-            template: 'src/views/index.html',
+            entry: 'views/main.js',
+            template: 'views/index.html',
         }
     },
     publicPath: './',

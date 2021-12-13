@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 
 class Command
 {
+    info: any;
     token: string = '';
     pwl: PWL;
     context: vscode.ExtensionContext;
@@ -32,6 +33,10 @@ class Command
 
             this.token = data.Key;
             this.context.globalState.update('token', this.token);
+            this.info = await this.pwl.info(this.token);
+
+            
+
         } catch (e) {
             vscode.window.showErrorMessage(`登录失败：${(e as Error).message}`);
         }

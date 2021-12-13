@@ -1,17 +1,12 @@
 import * as crypto from 'crypto';
 import { FormData } from 'formdata-node';
-import axios, { AxiosInstance } from 'axios';
-import * as http from 'http';
+import { fetch } from 'got-fetch';
 import * as https from 'https';
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 class PWL {
     token:string = '';
-    axios:AxiosInstance;
     constructor(token:string) {
-        this.axios = axios.create({
-            baseURL: 'https://pwl.icu/',
-            timeout: 20000,
-        });
         if (!token) { return; }
         this.token = token;
     }
@@ -139,7 +134,7 @@ class PWL {
                 url: `cr/raw/${oId}`,
             });
 
-            return rsp.raw.replace(/<!--.*?-->/g, '');
+            return rsp.body.replace(/<!--.*?-->/g, '');
         } catch (e) {
             return { code: -1, msg: (e as Error).message };
         }
@@ -165,8 +160,7 @@ class PWL {
         }
     }
 
-    async syncEmoji(data:any)
-    {
+    async syncEmoji(data:any) {
         let rsp;
         try {
             rsp = await this.request({
@@ -254,29 +248,24 @@ class PWL {
             data = undefined
         } = opt;
 
-        headers['User-Agent'] =
-            'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36';
-        headers['Referer'] = 'https://pwl.icu/';
-
+        let body = data instanceof FormData ? data : data && JSON.stringify(data);
+            
         let options = {
-            url, method, headers, data,
-            httpAgent: new http.Agent({
-                keepAlive: true
-            }),
+            method, headers, body,
             httpsAgent: new https.Agent({
                 keepAlive: true,
                 rejectUnauthorized: false,
-            }),
+            })
         };
     
         let rsp:any;
         try {
-            rsp = await this.axios.request(options);
-    
+            rsp = await fetch(`https://pwl.icu/${url}`, options);
+            try{ rsp.data = JSON.parse(rsp.body); } catch(e) {}
             return rsp;
         } catch (err) {
             let e = err as any;
-            if (e.response.status === 401) {return e.response;}
+            if (e.response.status === 401) { return e.response; }
             throw(e);
         }
     }

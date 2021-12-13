@@ -16,8 +16,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "pwl.helloWorld",
-        "title": "Hello World"
+        "command": "pwl-chat.login",
+        "title": "登录摸鱼派"
       }
     ],
     "viewsContainers": {
@@ -34,7 +34,7 @@
         {
           "id": "pwl-chat.chatView",
           "name": "摸鱼派聊天室",
-					"type": "webview"
+          "type": "webview"
         }
       ]
     }
@@ -73,6 +73,9 @@
   },
   "dependencies": {
     "axios": "^0.24.0",
-    "formdata-node": "^4.3.1"
+    "formdata-node": "^4.3.1",
+    "got": "^11.8.3",
+    "got-fetch": "^4.0.1",
+    "reconnecting-websocket": "^4.4.0"
   }
 }
