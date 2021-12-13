@@ -15,10 +15,15 @@ new Vue({
   },
   mounted() {
     window.addEventListener('message', event => {
-      const message = event.data; // The json data that the extension sent
+      const message = event.data;
+      console.log(message.type);
       switch (message.type) {
         case 'response': {
           this.callback[message.key](message.rsp);
+          break;
+        }
+        case 'style': {
+          document.getElementsByTagName('html')[0].setAttribute('style', message.data);
           break;
         }
       }

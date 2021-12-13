@@ -32,13 +32,11 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 		webviewView.webview.html = this.getHtml(webviewView.webview);
 
 		webviewView.webview.onDidReceiveMessage(async req => {
-			switch (req.type) {
-				case 'history':
-					req.rsp = await this._pwl.history(req.data);
-					req.type = 'response';
-					this._view?.webview.postMessage(req);
-					
-			}
+			let pwl:any = this._pwl;
+			if (!pwl || !pwl[req.type]) { return; }
+			req.rsp = await pwl[req.type](req.data);
+			req.type = 'response';
+			this._view?.webview.postMessage(req);
 		});
 	}
 

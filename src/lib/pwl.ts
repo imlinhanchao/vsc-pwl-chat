@@ -31,13 +31,11 @@ class PWL {
         }
     }
 
-    async info(token: string) {
+    async info() {
         try {
             let rsp = await this.request({
-                url: `api/user?apiKey=${token}`
+                url: `api/user?apiKey=${this.token}`
             });
-
-            if (rsp.data.code === 0) { this.token = token; }
 
             if (rsp.status === 401) { 
                 return { code: 401, msg: '登录已失效，请重新登录！' };
