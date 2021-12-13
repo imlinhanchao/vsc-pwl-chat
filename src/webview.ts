@@ -43,7 +43,7 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	private getHtml(webview: vscode.Webview) {
-		let state = false;//fs.statSync(path.resolve(__dirname, '..', 'dev'));
+		let state = fs.statSync(path.resolve(__dirname, '..', 'dev'));
 		let mainHtml = state ? 
 			path.resolve(__dirname, '..', 'dev', 'index.html') : 
 			path.resolve(__dirname, 'webview', 'index.html');
