@@ -97,6 +97,10 @@ class Command
 
         this.userBar.show();
     }
+
+    openLink(url:string) {
+        Utils.openUrl(url);
+    }
 }
 
 export default Command;

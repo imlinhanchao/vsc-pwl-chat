@@ -35,8 +35,7 @@ new Vue({
       let url = link.href;
       let mat = url.match(/goto=(.*?)$/);
       if (mat) url = decodeURIComponent(mat[1]);
-      window.open(url);
-      ev.preventDefault();
+      link.href = url;
     });
   },
   methods: {
