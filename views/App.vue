@@ -134,9 +134,9 @@ export default {
   }
 
   blockquote {
-    color: var(--vscode-badge-foreground);
+    color: var(--vscode-input-placeholderForeground);
     border-left: 0.25em inset var(--vscode-badge-foreground);
-    background-color: var(--vscode-scrollbarSlider-hoverBackground);
+    background-color: var(--vscode-scrollbarSlider-background);
     padding: 2px 0 2px 5px;
   }
 
