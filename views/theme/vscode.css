@@ -31,7 +31,7 @@ form > * {
 
 a:hover,
 a:active {
-	color: var(--vscode-textLink-activeForeground);
+	color: inherit;
 }
 
 code {

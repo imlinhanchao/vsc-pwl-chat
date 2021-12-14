@@ -112,6 +112,7 @@ export default {
   margin-left: 1em;
   font-size: 1em;
   margin-bottom: 2px;
+  min-height: 1em;
 }
 
 .msg-contain {
@@ -141,10 +142,10 @@ export default {
 }
 
 .msg-content {
-  background-color: var(--vscode-button-foreground);
+  background-color: var(--vscode-scrollbarSlider-background);
   border-radius: 5px;
   padding: 8px 15px;
-  color: var(--vscode-editor-background);
+  color: var(--vscode-button-foreground);
   word-break: break-word;
   max-width: calc(100% - 45px);
   overflow: auto;
@@ -156,11 +157,11 @@ export default {
   }
   .arrow {
     border-right-color: transparent;
-    border-left-color: var(--vscode-input-background);
+    border-left-color: var(--vscode-button-foreground);
   }
   .msg-content {
-    background-color: var(--vscode-input-background);
-    color: var(--vscode-button-foreground);
+    background-color: var(--vscode-button-foreground);
+    color: var(--vscode-background);
   }
   .msg-user {
     text-align: right;

@@ -97,7 +97,7 @@ export default {
     line-height: 1.5;
   }
   a {
-    border-bottom: 1px dashed #17233d;
+    border-bottom: 1px dashed var(--vscode-editor-background);
   }
   img {
     max-height: 60vh;
@@ -134,9 +134,10 @@ export default {
   }
 
   blockquote {
-    color: #6a737d;
-    border-left: 0.25em solid #eaecef;
-    padding-left: 5px;
+    color: var(--vscode-badge-foreground);
+    border-left: 0.25em inset var(--vscode-badge-foreground);
+    background-color: var(--vscode-scrollbarSlider-hoverBackground);
+    padding: 2px 0 2px 5px;
   }
 
   iframe {
