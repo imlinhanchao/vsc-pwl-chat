@@ -131,6 +131,7 @@ export default {
         let data = JSON.parse(item.content);
         if (data.msgType != "redPacket") return false;
         if (data.recivers) data.recivers = JSON.parse(data.recivers)
+        else data.recivers = []
         data.empty = data.got == data.count;
         data.readed = data.who.find((w) => w.userName == this.current.userName);
         return data;
@@ -142,10 +143,11 @@ export default {
       let money = redpacket.who.find(
         (w) => w.userName == this.current.userName
       );
+      redpacket.recivers = redpacket.recivers || [];
       item.redpacket.readed = true;
-      let specify = (redpacket.recivers && redpacket.recivers.indexOf(this.current.userName) >= 0)
+      let specify = (redpacket.recivers.length && redpacket.recivers.indexOf(this.current.userName) >= 0)
       let msg;
-      if (!specify) {
+      if (redpacket.recivers.length && !specify) {
           msg = "会错意，这个红包不是发给你"
       } else if (!money) {
         msg = "没有抢到，错过一个亿";
