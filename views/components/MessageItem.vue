@@ -10,8 +10,8 @@
         </a>
     </div>
     <div :ref="`msg-${item.oId}`" :data-id="item.oId" class="msg-item-contain">
-      <div class="msg-user" :title="item.userNickname">
-        {{ item.userName }}
+      <div class="msg-user" :title="item.userName">
+        {{ item.userNickname }}
       </div>
       <RedpacketMsg :item="item" :isCurrent="item.userName == current.userName"/>
       <div class="msg-contain" v-if="!item.redpacket">
