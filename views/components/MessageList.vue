@@ -143,9 +143,19 @@ export default {
       );
       item.redpacket.readed = true;
       let msg;
-      if (!money) msg = "没有抢到，错过一个亿";
-      else
-        msg = money.userMoney == 0
+      if (
+        (!money && !redpacket.recivers) ||
+        redpacket.recivers.indexOf(this.current.userName) >= 0
+      ) {
+        msg = "没有抢到，错过一个亿";
+      } else if (
+        redpacket.recivers &&
+        redpacket.recivers.indexOf(this.current.userName) < 0
+      ) {
+          msg = "会错意，这个红包不是发给你"
+      } else
+        msg =
+          money.userMoney == 0
             ? "抢了个寂寞，抢到 0 积分"
             : `成功抢到 ${money.userMoney} 积分`;
       this.$root.request("showbox", {
