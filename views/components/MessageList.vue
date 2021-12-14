@@ -4,8 +4,8 @@
             <MessageItem :current="current" :item="item" :plusOne="current && firstMsg && secondMsg && firstMsg.content == secondMsg.content && item.oId == firstMsg.oId"></MessageItem>
         </div>
         <div class="msg-more" @click="load(page + 1)" v-if="content.length < 1999">
-            <i custom="fa fa-caret-down" v-if="!loading" />
-            <i custom="fa fa-circle-o-notch fa-spin" v-if="loading" />
+            <i class="fa fa-caret-down" v-if="!loading" />
+            <i class="fa fa-circle-o-notch fa-spin" v-if="loading" />
         </div>
     </section>
 </template>
@@ -128,6 +128,14 @@ export default {
 .chat-content {
     overflow: hidden auto;
     margin-top: 5px;
+}
+.msg-more {
+    text-align: center;
+    margin: 5px 0 0;
+    cursor: pointer;
+    &:hover {
+        color: #57a3f3;
+    }
 }
 </style>
 <style lang="less">

@@ -29,6 +29,15 @@ new Vue({
         }
       }
     });
+    document.addEventListener('click', (ev) => {
+      let link = ev.target;
+      if (link.nodeName.toLowerCase() !== 'a' || link.dataset.action !== 'open-link') return;
+      let url = link.href;
+      let mat = url.match(/goto=(.*?)$/);
+      if (mat) url = decodeURIComponent(mat[1]);
+      window.open(url);
+      ev.preventDefault();
+    });
   },
   methods: {
     request(method, data) {

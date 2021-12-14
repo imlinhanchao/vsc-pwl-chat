@@ -74,8 +74,8 @@ export default {
     },
     formatContent(content) {
       return content
-        .replace(/(<a )/g, '$1target="_blank" ')
-        .replace(/<img\s+src="([^"]*?)"([^>]*?>)/g, '<a href="$1" target="_blank"><img src="$1" data-action="preview" $2</a>');
+        .replace(/(<a )/g, '$1target="_blank" data-action="open-link"')
+        .replace(/<img\s+src="([^"]*?)"([^>]*?>)/g, '<a href="$1" class="image-link" target="_blank"><img src="$1" data-action="preview" $2</a>');
     },
     async followMsg(item) {
       let raw = await this.$root.request("raw", item.oId);
@@ -188,14 +188,6 @@ export default {
     &:hover {
       background: #dcdee2;
     }
-  }
-}
-.msg-more {
-  text-align: center;
-  margin: 5px 0 0;
-  cursor: pointer;
-  &:hover {
-    color: #57a3f3;
   }
 }
 .hidden {
