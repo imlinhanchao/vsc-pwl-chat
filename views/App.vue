@@ -90,6 +90,11 @@ export default {
 }
 </style>
 <style lang="less">
+.msg-current {
+  a {
+    border-bottom: 1px dashed var(--vscode-scrollbarSlider-hoverBackground);
+  }
+}
 .md-style {
   * {
     margin-inline-start: 0;
@@ -97,7 +102,7 @@ export default {
     line-height: 1.5;
   }
   a {
-    border-bottom: 1px dashed var(--vscode-editor-background);
+    border-bottom: 1px dashed var(--vscode-button-foreground);
   }
   img {
     max-height: 60vh;

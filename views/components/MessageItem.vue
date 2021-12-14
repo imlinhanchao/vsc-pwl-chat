@@ -6,14 +6,14 @@
   >
     <div class="msg-avatar-box">
       <a target="_blank" :href="`https://pwl.icu/member/${item.userName}`">
-        <img class="msg-avatar" :src="item.userAvatarURL"/>
+        <span class="msg-avatar"><img :src="item.userAvatarURL"></span>
         </a>
     </div>
     <div :ref="`msg-${item.oId}`" :data-id="item.oId" class="msg-item-contain">
       <div class="msg-user" :title="item.userName">
         {{ item.userNickname }}
       </div>
-      <RedpacketMsg :item="item" :isCurrent="item.userName == current.userName"/>
+      <RedpacketMsg :item="item" :isCurrent="item.userName == current.userName" @click="openRedpacket(item)"/>
       <div class="msg-contain" v-if="!item.redpacket">
         <div
           class="arrow"
@@ -81,6 +81,11 @@ export default {
       let raw = await this.$root.request("raw", item.oId);
       this.$root.request("push", raw);
     },
+    async openRedpacket(item) {
+      let rsp = await this.$root.request('openRedpacket', item.oId);
+      if (!rsp) return;
+      this.$emit('redpacket', rsp);
+    },
   },
 };
 </script>
@@ -101,11 +106,24 @@ export default {
 }
 
 .msg-avatar {
+  display: inline-block;
+  text-align: center;
+  background: 0 0;
+  color: #fff;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  vertical-align: middle;
+  line-height: 32px;
   width: 35px;
   height: 35px;
   border-radius: 35px;
   margin-top: 1.5em;
   cursor: pointer;
+  img {
+    min-width: 100%;
+    max-width: 100%;
+  }
 }
 
 .msg-user {
@@ -161,7 +179,7 @@ export default {
   }
   .msg-content {
     background-color: var(--vscode-button-foreground);
-    color: var(--vscode-background);
+    color: var(--vscode-scrollbarSlider-hoverBackground);
   }
   .msg-user {
     text-align: right;

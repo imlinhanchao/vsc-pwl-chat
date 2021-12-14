@@ -12,8 +12,7 @@
       'msg-current': isCurrent,
       'redpacket-empty': item.redpacket.empty || item.redpacket.readed,
     }"
-    v-if="item.redpacket"
-    @click="openRedpacket(item)"
+    v-if="item.redpacket" @click="$emit('click', $event)"
   >
     <div class="arrow" />
     <div class="redpacket-content">
@@ -37,8 +36,6 @@ export default {
     };
   },
   methods: {
-    async openRedpacket() {
-    },
   },
 };
 </script>

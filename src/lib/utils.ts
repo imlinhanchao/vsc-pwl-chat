@@ -236,13 +236,13 @@ function showMessage(data:any) {
     switch(data.type)
     {
         case 'error':
-            vscode.window.showErrorMessage(data.message);
+            vscode.window.showErrorMessage(data.msg);
             break;
         case 'warning':
-            vscode.window.showWarningMessage(data.message);
+            vscode.window.showWarningMessage(data.msg);
             break;
         case 'info':
-            vscode.window.showInformationMessage(data.message);
+            vscode.window.showInformationMessage(data.msg);
             break;
     }
 }
