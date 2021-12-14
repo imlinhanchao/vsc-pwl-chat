@@ -6,12 +6,12 @@
   >
     <div class="msg-avatar-box">
       <a target="_blank" :href="`https://pwl.icu/member/${item.userName}`">
-        <span class="msg-avatar"><img :src="item.userAvatarURL"></span>
+        <span class="msg-avatar avatar"><img :src="item.userAvatarURL"></span>
         </a>
     </div>
     <div :ref="`msg-${item.oId}`" :data-id="item.oId" class="msg-item-contain">
       <div class="msg-user" :title="item.userName">
-        {{ item.userNickname }}
+        {{ item.userNickname || item.userName }}
       </div>
       <RedpacketMsg :item="item" :isCurrent="item.userName == current.userName" @click="openRedpacket(item)"/>
       <div class="msg-contain" v-if="!item.redpacket">
@@ -106,15 +106,6 @@ export default {
 }
 
 .msg-avatar {
-  display: inline-block;
-  text-align: center;
-  background: 0 0;
-  color: #fff;
-  white-space: nowrap;
-  position: relative;
-  overflow: hidden;
-  vertical-align: middle;
-  line-height: 32px;
   width: 35px;
   height: 35px;
   border-radius: 35px;

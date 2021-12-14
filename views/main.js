@@ -3,6 +3,7 @@ import App from './App.vue';
 import './theme/index.css';
 import './theme/vscode.css';
 import './theme/font-awesome.min.css';
+import emoji from './emoji';
 const vscode = window.acquireVsCodeApi ? acquireVsCodeApi() : window.parent;
 
 Vue.config.productionTip = false;
@@ -12,7 +13,8 @@ new Vue({
   data: {
     wsCallback: [],
     callback: {},
-    isdev: !window.acquireVsCodeApi
+    isdev: !window.acquireVsCodeApi,
+    emoji
   },
   mounted() {
     window.addEventListener('message', event => {
@@ -31,12 +33,13 @@ new Vue({
     });
     document.addEventListener('click', (ev) => {
       let link = ev.target;
-      if (link.nodeName.toLowerCase() !== 'a' || link.dataset.action !== 'open-link') return;
+      if (link.nodeName.toLowerCase() !== 'a' || link.dataset.action !== 'open-link') {return;}
       let url = link.href;
       let mat = url.match(/goto=(.*?)$/);
-      if (mat) url = decodeURIComponent(mat[1]);
+      if (mat) {url = decodeURIComponent(mat[1]);}
       link.href = url;
     });
+    this.emoji.load(this);
   },
   methods: {
     request(method, data) {

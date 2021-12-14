@@ -83,3 +83,22 @@ i.fa-help {
 a.image-link {
     border: 0;
 }
+.avatar{
+    display: inline-block;
+    text-align: center;
+    background: #ccc;
+    color: #fff;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 20px;
+}
+
+.avatar img {
+    min-width: 100%;
+    min-height: 100%;
+}
