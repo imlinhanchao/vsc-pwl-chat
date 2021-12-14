@@ -201,6 +201,10 @@ function getOpenCmd(): string {
     return cmd;
 }
 
+function openUrl(url:string) {
+    exec(`${getOpenCmd()} ${url}`);
+}
+
 function noticeComment(context: vscode.ExtensionContext) {
     let notice = context.globalState.get('notice');
     let usetimes: number = context.globalState.get('usetimes') || 0;
@@ -209,7 +213,7 @@ function noticeComment(context: vscode.ExtensionContext) {
             .then((option) => {
                 switch(option) {
                     case '好啊':
-                        exec(`${getOpenCmd()} https://marketplace.visualstudio.com/items?itemName=hancel.markdown-image`);
+                        openUrl(`https://marketplace.visualstudio.com/items?itemName=${pkg.publisher}.${pkg.name}`);
                         context.globalState.update('notice', true);
                         break;
                     case '不要':
@@ -252,6 +256,7 @@ export default {
     getCurrentFilePath,
     getTmpFolder,
     noticeComment,
+    openUrl,
     sleep,
     confirm,
     prompt,

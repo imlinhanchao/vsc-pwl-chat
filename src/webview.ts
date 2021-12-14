@@ -45,6 +45,7 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 					pwl.websocketInit((ev:MessageEvent) => {
 						this._view?.webview.postMessage({ type: 'websocket', data: ev.data});
 					});
+					this._command.liveness(this._command.account);
 					return;
 				case 'showbox':
 					Utils.showMessage(req.data);

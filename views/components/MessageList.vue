@@ -1,7 +1,7 @@
 <template>
     <section class="chat-content" ref="chat-content">
         <div v-for="(item, i) in content" v-bind:key="(item.type || 'msg') + '_' + item.oId + (item.whoGot || '')">
-            <MessageItem :current="current" :item="item" :plusOne="firstMsg && secondMsg && firstMsg.content == secondMsg.content && item.oId == firstMsg.oId"></MessageItem>
+            <MessageItem :current="current" :item="item" :plusOne="current && firstMsg && secondMsg && firstMsg.content == secondMsg.content && item.oId == firstMsg.oId"></MessageItem>
         </div>
         <div class="msg-more" @click="load(page + 1)" v-if="content.length < 1999">
             <i custom="fa fa-caret-down" v-if="!loading" />

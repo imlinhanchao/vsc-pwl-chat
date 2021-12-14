@@ -75,7 +75,7 @@ export default {
     formatContent(content) {
       return content
         .replace(/(<a )/g, '$1target="_blank" ')
-        .replace(/(<img )/g, '$1data-action="preview" ');
+        .replace(/<img\s+src="([^"]*?)"([^>]*?>)/g, '<a href="$1" target="_blank"><img src="$1" data-action="preview" $2</a>');
     },
     async followMsg(item) {
       let raw = await this.$root.request("raw", item.oId);

@@ -11,7 +11,8 @@
   ],
   "activationEvents": [
     "onView:pwl-chat.chatView",
-    "onCommand:pwl-chat.login"
+    "onCommand:pwl-chat.login",
+    "onCommand:pwl-chat.register"
   ],
   "publisher": "hancel",
   "license": "MIT",
@@ -22,11 +23,15 @@
     "commands": [
       {
         "command": "pwl-chat.login",
-        "title": "登录摸鱼派(PWL Chatroom Login)"
+        "title": "摸鱼派: 登录聊天室(PWL Chatroom Login)"
       },
       {
         "command": "pwl-chat.logout",
-        "title": "摸鱼派注销登录(PWL Chatroom Logout)"
+        "title": "摸鱼派: 注销登录(PWL Chatroom Logout)"
+      },
+      {
+        "command": "pwl-chat.register",
+        "title": "摸鱼派: 注册账号(PWL Chatroom Register)"
       }
     ],
     "viewsContainers": {
@@ -85,6 +90,7 @@
     "got": "^11.8.3",
     "got-fetch": "^4.0.1",
     "reconnecting-websocket": "^4.4.0",
+    "utf-8-validate": "^5.0.2",
     "ws": "^8.3.0"
   }
 }
