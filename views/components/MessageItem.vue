@@ -198,7 +198,7 @@ export default {
 <style lang="less">
 .msg-img {
   img {
-    max-width: 90vw;
+    max-width: 60vw;
   }
   [alt="图片表情"] {
     max-width: 150px;

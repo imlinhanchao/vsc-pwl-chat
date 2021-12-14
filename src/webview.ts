@@ -65,7 +65,7 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	private getHtml(webview: vscode.Webview) {
-		let exists = false;//fs.existsSync(path.resolve(__dirname, '..', 'dev'));
+		let exists = fs.existsSync(path.resolve(__dirname, '..', 'dev'));
 		let mainHtml = exists ? 
 			path.resolve(__dirname, '..', 'dev', 'index.html') : 
 			path.resolve(__dirname, 'webview', 'index.html');

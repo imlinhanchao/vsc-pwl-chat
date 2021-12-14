@@ -1,28 +1,25 @@
 # 摸鱼派聊天室 VSCode 扩展
 
-这里是[摸鱼派](https://pwl.icu) 聊天室扩展。
+基于摸鱼打工人社区——[摸鱼派](http://pwl.icu)开放 API 开发的聊天室扩展，可以在里面边写 Bug 边愉快地吹水摸鱼。 。
 
-## Features
+## 功能
 
-开发中。
+- 😎 基本聊天吹水；
 
-## Requirements
+![](media/preview.png)
 
-无
+## 扩展设置
 
-## Extension Settings
-
-待定
-
-## Known Issues
-
-无
+还没有。
 
 ## Release Notes
 
-### 1.0.0
+### 0.0.1
+- 完成初版。
 
-敬请期待。
-
+## 前端调试说明
+1. 按下 `Ctrl + Shift + P` 选择 `Task: Run Task`，运行 `vue serve` Task。
+2. 按 `F5` 启动，调试前端代码使用 VSCode 的 Developer Tools (`Ctrl + Shift + I`)。
+3. 在 Developer Tools 找到 `webviewview-pwl-chat-chatview` 中的 `active-frame` 中的 `localhost`，修改前端代码 (`views`目录) 会实时更新。
 -----------------------------------------------------------------------------------------------------------
 **Enjoy!**
