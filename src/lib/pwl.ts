@@ -4,6 +4,8 @@ import { fetch } from 'got-fetch';
 import * as https from 'https';
 import ReconnectingWebSocket from "reconnecting-websocket";
 import WS from 'ws';
+import * as packages from '../../package.json';
+let pkg = packages as any;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 class PWL {
@@ -276,6 +278,9 @@ class PWL {
 
         let body = data instanceof FormData ? data : data && JSON.stringify(data);
             
+        headers['User-Agent'] = `Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36`;
+        headers['Referer'] = 'https://pwl.icu/';
+
         let options = {
             method, headers, body,
             httpsAgent: new https.Agent({
