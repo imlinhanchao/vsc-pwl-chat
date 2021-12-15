@@ -150,18 +150,30 @@ export default {
     width: 100%;
   }
 
+  table {
+    border-collapse: collapse;
+    empty-cells: show;
+    margin-bottom: 16px;
+    overflow: auto;
+    border-spacing: 0;
+    display: block;
+    word-break: keep-all;
+    width: 100%;
+  }
+
   table tr {
     border-top: 1px solid #c6cbd1;
-    background-color: #fafbfc;
+    background-color: rgba(155, 155, 155, .3);
   }
 
   table td,
   table th {
-    border: 1px solid #dfe2e5;
+    border: 1px solid rgba(138, 138, 138, .5);
+    padding: 5px;
   }
 
   table tbody tr:nth-child(2n) {
-    background-color: #fff;
+    background-color: rgba(55, 55, 55, .3);
   }
 
   code:not(.hljs):not(.highlight-chroma) {
