@@ -13,7 +13,7 @@
       <div class="msg-user" :title="item.userName">
         {{ item.userNickname || item.userName }}
       </div>
-      <MessageMenu v-if="contextmenuId == item.oId" :pos="this.contextmenuPos" :item="item" :isCurrent="item.userName == current.userName" :menuTarget="menuTarget" 
+      <MessageMenu v-if="contextmenuId == item.oId && false" :pos="this.contextmenuPos" :item="item" :isCurrent="item.userName == current.userName" :menuTarget="menuTarget" 
         @msg="$emit('msg', $event)" 
         @face="$emit('face', $event)"
         @quote="$emit('quote', $event)"/>

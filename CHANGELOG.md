@@ -4,7 +4,6 @@ All notable changes to the "pwl-chat" extension will be documented in this file.
 
 ## [0.0.4] - 2021-12-16
 - 加入图片上传功能
-- 加入消息菜单，可@用户，复读消息，插入相同内置表情。
 
 ## [0.0.3] - 2021-12-15
 - 紧急维护，修改活跃度更新频次，提升服务器稳定性。
