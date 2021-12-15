@@ -296,9 +296,8 @@ class PWL {
             rsp = await axios(`https://pwl.icu/${url}`, options);
             return rsp;
         } catch (err) {
-            let e = err as any;
-            if (e.response.status === 401) { return e.response; }
-            throw(e);
+            if ((err as any).response.status === 401) { return (err as any).response; }
+            throw(err);
         }
     }
 }

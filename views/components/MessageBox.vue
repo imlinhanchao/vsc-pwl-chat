@@ -156,17 +156,11 @@ export default {
       if (!rsp) return;
       if (rsp.code == 401 && !retry && (await this.$root.request("relogin"))) {
         if (await this.wsSend(message, true))
-          this.$root.request("showbox", {
-            type: "warning",
-            msg: "服务器失联，已重新登录.",
-          });
+          this.$root.msg('warning', '服务器失联，已重新登录.');
         return true;
       }
       if (rsp.code != 0) {
-        this.$root.request("showbox", {
-          type: "error",
-          msg: rsp.msg,
-        });
+        this.$root.msg('error', rsp.msg);
         return false;
       }
     },
@@ -181,7 +175,7 @@ export default {
         this.$refs['file'].value = '';
         if (!rsp) return;
         if (rsp.code != 0) {
-            this.$root.request('showbox', { type: 'error', msg: rsp.msg });
+            this.$root.msg('error', rsp.msg);
             return;
         }
         let fileData = rsp.data.succMap;

@@ -9,12 +9,16 @@
         <span class="msg-avatar avatar"><img :src="item.userAvatarURL"></span>
         </a>
     </div>
-    <div :ref="`msg-${item.oId}`" :data-id="item.oId" class="msg-item-contain">
+    <div ref="msg" :data-id="item.oId" class="msg-item-contain">
       <div class="msg-user" :title="item.userName">
         {{ item.userNickname || item.userName }}
       </div>
+      <MessageMenu v-if="contextmenuId == item.oId" :pos="this.contextmenuPos" :item="item" :isCurrent="item.userName == current.userName" :menuTarget="menuTarget" 
+        @msg="$emit('msg', $event)" 
+        @face="$emit('face', $event)"
+        @quote="$emit('quote', $event)"/>
       <RedpacketMsg :item="item" :isCurrent="item.userName == current.userName" @click="openRedpacket(item)"/>
-      <div class="msg-contain" v-if="!item.redpacket">
+      <div class="msg-contain" v-if="!item.redpacket" @contextmenu="menuShow">
         <div
           class="arrow"
           v-if="item.content.replace(/\n/g, '').match(/>[^<]+?</g)"
@@ -37,8 +41,9 @@
 
 <script>
 import RedpacketMsg from './RedpacketMsg.vue';
+import MessageMenu from './MessageMenu.vue';
 export default {
-  components: { RedpacketMsg },
+  components: { RedpacketMsg, MessageMenu },
   name: "MessageItem",
   props: {
     current: {
@@ -47,6 +52,8 @@ export default {
         return {};
       },
     },
+    contextmenuId: String,
+    contextmenuPos: Object,
     item: {
       type: Object,
       require: true,
@@ -57,6 +64,13 @@ export default {
         return false;
       },
     },
+  },
+  data() {
+    return {
+      menuTarget: null,
+    }
+  },
+  computed: {
   },
   methods: {
     getRedPacket(item) {
@@ -86,6 +100,20 @@ export default {
       if (!rsp) return;
       this.$emit('redpacket', rsp);
     },
+    menuShow(ev) {
+      this.menuTarget = ev.target;
+      let ele = this.$refs.msg;
+      let pos = {
+          x: ev.clientX < window.innerWidth / 2 ? 
+            ev.clientX - ele.offsetLeft : ele.offsetLeft + ele.offsetWidth - ev.clientX,
+          y: ev.clientY - ele.offsetTop + window.scrollY,
+          left: ev.clientX < window.innerWidth / 2
+      }
+      this.$emit('menu', {
+        id: this.item.oId,
+        pos: pos,
+      });
+    }
   },
 };
 </script>
@@ -179,25 +207,6 @@ export default {
   .plus-one {
     left: -1.5em;
     right: auto;
-  }
-}
-.msg-menu {
-  position: absolute;
-  background: #fff;
-  box-shadow: 1px 1px 3px #515a6e;
-  border-radius: 5px;
-  color: #17233d;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 50;
-  .msg-menu-item {
-    padding: 5px 10px;
-    word-break: keep-all;
-    &:hover {
-      background: #dcdee2;
-    }
   }
 }
 .hidden {

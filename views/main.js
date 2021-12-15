@@ -14,7 +14,7 @@ new Vue({
     wsCallback: [],
     callback: {},
     isdev: !window.acquireVsCodeApi,
-    emoji
+    emoji,
   },
   mounted() {
     window.addEventListener('message', event => {
@@ -57,6 +57,9 @@ new Vue({
         };
         vscode.postMessage(message, '*');
       });
+    },
+    msg(type, msg) {
+      this.request('showbox', { type, msg });
     }
   }
 }).$mount('#app');

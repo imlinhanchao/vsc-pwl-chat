@@ -6,8 +6,14 @@
     >
       <MessageItem
         @redpacket="showRedpacket(item, $event)"
+        @msg="$emit('msg', $event)" 
+        @face="$emit('face', $event)"
+        @quote="$emit('quote', $event)"
         :current="current"
         :item.sync="item"
+        :contextmenuId.sync="contextmenuId"
+        :contextmenuPos.sync="contextmenuPos"
+        @menu="OnMenu"
         :plusOne="
           current &&
           firstMsg &&
@@ -49,6 +55,8 @@ export default {
       faceMenu: {},
       loading: false,
       menuTarget: null,
+      contextmenuId: '',
+      contextmenuPos: {},
     };
   },
   computed: {
@@ -82,6 +90,13 @@ export default {
       if (page > 1) this.content = this.content.concat(data);
       else this.content = rsp.data;
       this.page = page;
+    },
+    clear() {
+      this.contextmenuId = ''
+    },
+    OnMenu(data) {
+      this.contextmenuId = data.id;
+      this.contextmenuPos = data.pos;
     },
     wsInit() {
       this.$root.request("websocketInit");
@@ -157,10 +172,7 @@ export default {
               ? "抢了个寂寞，抢到 0 积分"
               : `成功抢到 ${money.userMoney} 积分`;
       }
-      this.$root.request("showbox", {
-        type: "info",
-        msg,
-      });
+      this.$root.msg('info', msg);
     },
   },
 };
