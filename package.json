@@ -9,6 +9,14 @@
   "categories": [
     "Other"
   ],
+  "keywords": [
+      "摸鱼",
+      "聊天室",
+      "PWL",
+      "休闲",
+      "不加班",
+      "反内卷"
+  ],
   "activationEvents": [
     "onView:pwl-chat.chatView",
     "onCommand:pwl-chat.login",
