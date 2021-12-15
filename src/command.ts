@@ -93,7 +93,7 @@ class Command
             let liveness = await this.pwl.liveness();
             if (liveness.code === 401) { this.pwl.login(account); }
             else { this.userBar.text = `摸鱼派: ${this.info?.userNickname}(${liveness}%)`; }
-        }, 2000);
+        }, 10000);
 
         this.userBar.show();
     }
