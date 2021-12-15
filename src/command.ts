@@ -19,6 +19,7 @@ class Command
         this.account.passwd = this.context.globalState.get('passwd') || '';
     }
 
+    // 开放给用户呼叫的 Command 函数名
     static get commands() {
         return [
             'login',
@@ -31,7 +32,7 @@ class Command
         this.info = (await this.pwl.info()).data;
         if (this.info) {
             this.userBar.tooltip = '点击退出登录';
-            this.userBar.text = `摸鱼派: ${this.info.userNickname}`;
+            this.userBar.text = `摸鱼派: ${this.info.userNickname || this.info.userName}`;
             this.userBar.command = `pwl-chat.logout`;
         }
     }
@@ -93,7 +94,7 @@ class Command
             let liveness = await this.pwl.liveness();
             if (liveness.code === 401) { this.pwl.login(account); }
             else { this.userBar.text = `摸鱼派: ${this.info?.userNickname}(${liveness}%)`; }
-        }, 10000);
+        }, 30000);
 
         this.userBar.show();
     }
