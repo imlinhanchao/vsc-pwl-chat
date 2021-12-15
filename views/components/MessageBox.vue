@@ -10,9 +10,18 @@
       @keyup.left="selList(-1)"
       @keyup.right="selList(1)"
     />
-    <button @click="send">
-      <i class="fa fa-paper-plane" aria-hidden="true"></i>
-    </button>
+    <span class="msg-control">
+        <span class="msg-btn">
+            <button @click="send">
+                <i class="fa fa-paper-plane"></i>
+            </button>
+            <button @click="controlMore=!controlMore" class="more fa fa-caret-down"></button>
+        </span>
+        <button class="msg-control-more" v-show="controlMore" @click="imageHandle" title="上传图片">
+            <i class="fa fa-picture-o"/>
+        </button>
+        <input type="file" name="images" accept="image/*" ref="file" v-show="false" @change="uploadImg">
+    </span>
     <section class="at-list" v-if="atList.length">
       <div
         class="at-item"
@@ -59,6 +68,7 @@ export default {
       emojiList: [],
       currentSel: -1,
       lastCursor: 0,
+      controlMore: false
     };
   },
   mounted() {
@@ -160,6 +170,26 @@ export default {
         return false;
       }
     },
+    imageHandle() {
+        this.$refs['file'].click();
+        this.controlMore = false;
+    },
+    async uploadImg(ev) {
+        let files = Array.from(ev.target.files).map(f => f.path)
+        if (files.length == 0) return;
+        let rsp = await this.$root.request('upload', files);
+        this.$refs['file'].value = '';
+        if (!rsp) return;
+        if (rsp.code != 0) {
+            this.$root.request('showbox', { type: 'error', msg: rsp.msg });
+            return;
+        }
+        let fileData = rsp.data.succMap;
+        let filenames = Object.keys(fileData)
+        
+        this.lastCursor = this.msgCursor();
+        this.appendMsg({ regexp: null, data: filenames.map(f => `![${f}](${fileData[f]})`).join('') }); 
+    },
   },
 };
 </script>
@@ -173,6 +203,32 @@ export default {
   z-index: 10;
   button {
     width: 50px;
+  }
+  .msg-control {
+      position: relative;
+      .msg-btn {
+          display: flex;
+          flex-direction: row;
+          width: 50px;
+          button {
+              padding-right: 5px;
+          }
+          .more {
+              &:hover {
+                  background: var(--vscode-button-hoverBackground);
+              }
+              background: transparent;
+              width: 12px;
+              padding: 0;
+              font-size: .6em;
+              position: absolute;
+              right: 0;
+              height: 100%;
+          }
+      }
+    .msg-control-more {
+        position: absolute;
+    }
   }
 }
 .at-list,

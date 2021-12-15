@@ -1,6 +1,8 @@
 import * as crypto from 'crypto';
-import { FormData } from 'formdata-node';
-import { fetch } from 'got-fetch';
+import * as fs from 'fs';
+import * as path from 'path';
+import FormData from 'form-data';
+import axios from 'axios';
 import * as https from 'https';
 import ReconnectingWebSocket from "reconnecting-websocket";
 import WS from 'ws';
@@ -138,7 +140,7 @@ class PWL {
                 url: `cr/raw/${oId}`,
             });
 
-            return rsp.body.replace(/<!--.*?-->/g, '');
+            return rsp.data.replace(/<!--.*?-->/g, '');
         } catch (e) {
             return { code: -1, msg: (e as Error).message };
         }
@@ -211,7 +213,7 @@ class PWL {
 
     async upload(files:Array<string>) {
         let data = new FormData();
-        files.forEach(f => data.append('file[]', f));
+        files.forEach(f => data.append('file[]', fs.readFileSync(f), path.basename(f)));
 
         let rsp;
         try {
@@ -219,6 +221,7 @@ class PWL {
                 url: `upload`,
                 method: 'post',
                 data,
+                headers: data.getHeaders()
             });
 
             if (rsp.status === 401) {return { code: 401, msg: '登录已失效，请重新登录！' };}
@@ -273,26 +276,24 @@ class PWL {
             url,
             method = 'get',
             headers = {},
-            data = undefined
+            data
         } = opt;
 
-        let body = data instanceof FormData ? data : data && JSON.stringify(data);
-            
         headers['User-Agent'] = `Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36`;
         headers['Referer'] = 'https://pwl.icu/';
 
         let options = {
-            method, headers, body,
+            method, headers,
             httpsAgent: new https.Agent({
                 keepAlive: true,
                 rejectUnauthorized: false,
-            })
+            }),
+            data
         };
     
         let rsp:any;
         try {
-            rsp = await fetch(`https://pwl.icu/${url}`, options);
-            try{ rsp.data = JSON.parse(rsp.body); } catch(e) {}
+            rsp = await axios(`https://pwl.icu/${url}`, options);
             return rsp;
         } catch (err) {
             let e = err as any;

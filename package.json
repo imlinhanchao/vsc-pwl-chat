@@ -10,12 +10,12 @@
     "Other"
   ],
   "keywords": [
-      "摸鱼",
-      "聊天室",
-      "PWL",
-      "休闲",
-      "不加班",
-      "反内卷"
+    "摸鱼",
+    "聊天室",
+    "PWL",
+    "休闲",
+    "不加班",
+    "反内卷"
   ],
   "activationEvents": [
     "onView:pwl-chat.chatView",
@@ -94,9 +94,8 @@
     "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
-    "formdata-node": "^4.3.1",
-    "got": "^11.8.3",
-    "got-fetch": "^4.0.1",
+    "axios": "^0.24.0",
+    "form-data": "^4.0.0",
     "reconnecting-websocket": "^4.4.0",
     "utf-8-validate": "^5.0.2",
     "ws": "^8.3.0"
