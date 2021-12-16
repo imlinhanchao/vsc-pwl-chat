@@ -2,6 +2,10 @@
 
 All notable changes to the "pwl-chat" extension will be documented in this file.
 
+## [0.0.5] - 2021-12-17
+- 加入消息菜单，可以`@`用户，回复消息，收藏表情，撤回消息等；
+- 加入表情包功能；
+
 ## [0.0.4] - 2021-12-16
 - 加入图片上传功能
 

@@ -19,10 +19,10 @@
       @{{ item.userName }}
     </div>
     <div class="msg-menu-item" v-if="hasFace" @click="addFace">
-      添加到表情包
+      收藏表情
     </div>
     <div class="msg-menu-item" v-if="!item.redpacket" @click="followMsg">
-      复读一下
+      复读机
     </div>
     <div
       class="msg-menu-item"

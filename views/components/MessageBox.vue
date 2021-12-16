@@ -394,6 +394,7 @@ export default {
                 display: inline-block;
                 width: 100%;
                 height: 100%;
+                background-repeat: no-repeat;
             }
             .face-remove {
                 position: absolute;
