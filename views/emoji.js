@@ -751,10 +751,7 @@ export default {
     getUrl(name) {
         return emoji[name].url;
     },
-    async sync(token) {
-        if (!token) {
-            return;
-        }
+    async sync() {
         await this.root.request('syncEmoji', faces['^syncs'].url);
     },
     push(name, url) {
@@ -775,17 +772,15 @@ export default {
         emojiNames.push(name);
         return true;
     },
-    remove(url, token) {
+    remove(url) {
         faces['^syncs'].url.splice(faces['^syncs'].url.indexOf(url), 1);
         emojis['^syncs'].url = faces['^syncs'].url;
-        this.save(token);
+        this.save();
         return emojis['^syncs'].url;
     },
-    save(token) {
+    save() {
         localStorage.setItem('faces', JSON.stringify(faces));
-        if (token) {
-            this.sync(token);
-        }
+        this.sync();
     },
     get urls() {
         return emojis['^syncs'].url;

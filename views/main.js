@@ -41,7 +41,6 @@ new Vue({
       if (mat) {url = decodeURIComponent(mat[1]);}
       link.href = url;
     });
-    this.emoji.load(this);
   },
   methods: {
     // 给扩展后端发送消息

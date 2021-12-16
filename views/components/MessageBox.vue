@@ -15,11 +15,16 @@
             <button @click="send">
                 <i class="fa fa-paper-plane"></i>
             </button>
-            <button @click="controlMore=!controlMore" class="more fa fa-caret-down"></button>
+            <button @click.stop="controlMore=!controlMore" class="more fa fa-caret-down"></button>
         </span>
-        <button class="msg-control-more" v-show="controlMore" @click="imageHandle" title="上传图片">
-            <i class="fa fa-picture-o"/>
-        </button>
+        <span class="msg-control-more" v-show="controlMore" >
+          <button class="msg-control-item" @click.stop="imageHandle" title="上传图片">
+              <i class="fa fa-picture-o"/>
+          </button>
+          <button class="msg-control-item" @click.stop="faceHandle" title="发表情">
+              <i class="fa fa-smile-o"/>
+          </button>
+        </span>
         <input type="file" name="images" accept="image/*" ref="file" v-show="false" @change="uploadImg">
     </span>
     <section class="at-list" v-if="atList.length">
@@ -48,6 +53,26 @@
             <div class="quote-tip md-style" v-html="quote.content"></div>
         </div>
     </section>
+    <article class="face-list face-diy" v-show="faceForm">
+        <section :ref="`face-${i}`"
+            class="face-item" v-for="(u, i) in faces" 
+            @click="sendFace(emoji.get(u))">
+          <span class="face-space" 
+            :style="{ backgroundImage: `url(${u})`}" 
+          ></span>
+          <span class="face-remove" @click.stop="removeFace(u)">
+              <button class="btn-text"><svg style="width: 15px; height: 15px;"><use xlink:href="#delIcon"></use></svg>
+              </button>
+          </span>
+          <div class="msg-quote-tip" slot="content">
+              <img :src="u">
+          </div>
+        </section>
+        <section class="face-add" title="上传表情" @click="$refs['facefile'].click()">
+            <i class="fa fa-plus" />
+            <input type="file" name="images" accept="image/*" ref="facefile" v-show="false" @change="uploadFace">
+        </section>
+    </article>
   </div>
 </template>
 
@@ -66,6 +91,10 @@ export default {
       else if (matEmoji) this.getEmoji(matEmoji[1]);
       else this.emojiList = this.atList = [];
     },
+    quote (val) {
+      if (val == null) this.message =  this.message.replace(/^并说：/, '');
+      else if(!this.message.startsWith('并说：')) this.message = '并说：' + this.message;
+    }
   },
   data() {
     return {
@@ -74,19 +103,26 @@ export default {
       emojiList: [],
       currentSel: -1,
       lastCursor: 0,
-      controlMore: false
+      controlMore: false,
+      faceForm: false,
+      faces: [],
     };
   },
   mounted() {
-      
+      this.faces = this.$root.emoji.urls;
+      // document.removeEventListener('paste', this.onPaste);
+      // document.addEventListener('paste', this.onPaste);
   },
-  watch: {
-    quote (val) {
-        if (val == null) this.message =  this.message.replace(/^并说：/, '');
-        else if(!this.message.startsWith('并说：')) this.message = '并说：' + this.message;
+  computed: {
+    emoji() {
+      return this.$root.emoji;
     }
   },
   methods: {
+    clear() {
+      this.controlMore = false;
+      this.faceForm = false;
+    },
     getEmoji(name) {
       if (!name || name.length < 1) return;
       this.emojiList = this.$root.emoji.search(name);
@@ -196,6 +232,55 @@ export default {
         this.lastCursor = this.msgCursor();
         this.appendMsg({ regexp: null, data: filenames.map(f => `![${f}](${fileData[f]})`).join('') }); 
     },
+    faceHandle() {
+      this.faces = this.$root.emoji.urls;
+      this.faceForm = true;
+      this.controlMore = false;
+    },
+    sendFace(face) {
+        this.lastCursor = this.msgCursor();
+        this.appendMsg({ regexp: null, data: face });
+        this.faceForm = false;
+    },
+    async uploadFace(ev) {
+        let files = Array.from(ev.target.files)
+        let rsp = await this.$root.pwl.upload(files);
+        if (!rsp) return;
+        if (rsp.code != 0) {
+            this.$Message.error(rsp.msg);
+            return;
+        }
+        let fileData = rsp.data.succMap;
+        for(let d in fileData) {
+            this.faces.push(fileData[d]);
+            emoji.push(null, fileData[d])
+        }
+        emoji.save(this.$root.token);
+    },
+    async onPaste(ev) {
+        let items = ev.clipboardData && ev.clipboardData.items;
+        let file = [];
+        if (items && items.length) {
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    file.push(items[i].getAsFile());
+                    break;
+                }
+                if (items[i].type.indexOf('html') !== -1) {
+                    let files = await this.htmlGetImg(items[i])
+                    files = files || []
+                    files = files.map(f => constructFileFromLocalFileData(new LocalFileData(f.replace(/file:\/\/\//g, ''))))
+                    file = file.concat(files);
+                }
+            }
+        }
+        if (file.length == 0) return;
+        this.lastCursor = this.msgCursor();
+        await this.uploadImg({ target: { files: file}});
+    },
+    async removeFace(u) {
+        this.faces = await this.emoji.remove(u);
+    },
   },
 };
 </script>
@@ -288,5 +373,69 @@ export default {
     background: rgba(69, 69, 69, .65);
     padding: 5px;
   }
+}
+.face-list {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: auto;
+    max-height: 350px;
+    top: 3em;
+    &.face-diy {
+        .face-item {
+            width: 60px;
+            height: 60px;
+            overflow: hidden;
+            position: relative;
+            background: rgba(100, 100, 100, 0.5);
+            .face-space {
+                background-size: cover;
+                display: inline-block;
+                width: 100%;
+                height: 100%;
+            }
+            .face-remove {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                font-size: .5em;
+                button {
+                    padding: 0;
+                    width: auto;
+                }
+            }
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                width: auto;
+            }
+        }
+        .msg-quote-tip {
+            img {
+                width: auto;
+                max-width: 150px;
+                max-height: 150px;
+            }
+        }
+    }
+    .face-item {
+        width: 10%;
+        padding: 5px;
+        cursor: pointer;
+        img {
+            width: 100%;
+        }
+    }
+    .face-add {
+        width: 59px;
+        height: 59px;
+        cursor: pointer;
+        line-height: 59px;
+        text-align: center;
+        margin: 2px;
+        border: 1px dashed #6a737d;
+        background: rgba(100, 100, 100, 0.5);
+    }
 }
 </style>

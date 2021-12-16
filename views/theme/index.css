@@ -102,3 +102,8 @@ a.image-link {
     min-width: 100%;
     min-height: 100%;
 }
+.btn-text, .btn-text:hover {
+    color: #aca49a;
+    background-color: transparent;
+    border-color: transparent;
+}
