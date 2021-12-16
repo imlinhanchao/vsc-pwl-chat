@@ -18,7 +18,7 @@
     >
       @{{ item.userName }}
     </div>
-    <div class="msg-menu-item" v-if="hasFace && false" @click="addFace">
+    <div class="msg-menu-item" v-if="hasFace" @click="addFace">
       添加到表情包
     </div>
     <div class="msg-menu-item" v-if="!item.redpacket" @click="followMsg">
@@ -28,12 +28,12 @@
       class="msg-menu-item"
       v-if="isEmoji"
       title="消息中插入该表情"
-      @click="appendMsg(emojiCode(item.content))"
+      @click="appendMsg(emojiCode)"
     >
-      {{ emojiCode(item.content) }}
+      {{ emojiCode }}
     </div>
-    <div class="msg-menu-item" v-if="!item.redpacket && false" @click="quoteMsg">
-      引用
+    <div class="msg-menu-item" v-if="!item.redpacket" @click="quoteMsg">
+      回复
     </div>
   </div>
 </template>
@@ -73,25 +73,24 @@ export default {
     },
     isEmoji() {
       return (
-        (this.menuTarget || { nodeName: "" }).nodeName.toLowerCase() == "img" &&
-        this.menuTarget.className == "emoji"
+        this.menuTarget.querySelector('img') != null &&
+        this.menuTarget.querySelector('img').className == "emoji"
       );
     },
     hasFace() {
       return (
-        this.item.content.match(/<img/) != null &&
-        (this.menuTarget || { nodeName: "" }).nodeName.toLowerCase() == "img" &&
-        this.menuTarget.className != "emoji"
+        this.menuTarget.querySelector('img') != null &&
+        this.menuTarget.querySelector('img').className != "emoji"
       );
+    },
+    emojiCode() {
+      return `:${this.menuTarget.querySelector('img.emoji').src.match(/\/([^\/.]*?)(.gif|.png)/)[1]}:`;
     },
   },
   methods: {
     async followMsg() {
       let raw = await this.$root.request("raw", this.item.oId);
       this.$root.request("push", raw);
-    },
-    emojiCode(content) {
-      return `:${content.match(/\/([^\/.]*?)(.gif|.png)/)[1]}:`;
     },
     appendMsg(msg) {
       this.$emit("msg", msg);
@@ -108,10 +107,10 @@ export default {
       this.appendMsg(`@${this.item.userName} `)
     },
     addFace() {
-      this.$emit('face', this.menuTarget.src);
+      this.$emit('face', Array.from(this.menuTarget.querySelectorAll('img')).map(i => i.src));
     },
     quoteMsg() {
-      this.$emit('quote', item);
+      this.$emit('quote', this.item);
     },
   },
 };

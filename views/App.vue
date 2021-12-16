@@ -10,7 +10,7 @@
         <div v-if="!current.userName" class="login-link">
           <a href="#" @click="login">登录</a>或<a href="https://pwl.icu/register?r=imlinhanchao">注册</a>后加入聊天室
         </div>
-        <MessageBox ref="msg" v-if="current.userName"></MessageBox>
+        <MessageBox ref="msg" v-if="current.userName" :quote.sync="quote"></MessageBox>
         <MessageList ref="list" :current="current"
         @msg="appendMsg" 
         @face="addFace"
@@ -31,7 +31,8 @@ export default {
     },
     data() {
         return {
-            current: {}
+            current: {},
+            quote: null,
         }
     },
     mounted() {
@@ -70,10 +71,17 @@ export default {
           this.$refs.msg.appendMsg({ data: msg });
         },
         addFace(face) {
-
+          let add = 0;
+          face.forEach(f => add += this.$root.emoji.push(null, f) ? 1 : 0)
+          if(add > 0) {
+            this.$root.msg('info', '添加成功！');
+          } else {
+            this.$root.msg('warning', '表情已存在');
+          }
+          this.$root.emoji.save();
         },
         quoteMsg(item) {
-
+          this.quote = item
         },
         noticeListener(event) {
             const message = event.data;

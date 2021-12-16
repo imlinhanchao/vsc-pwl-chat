@@ -9,7 +9,7 @@
         <span class="msg-avatar avatar"><img :src="item.userAvatarURL"></span>
         </a>
     </div>
-    <div ref="msg" :data-id="item.oId" class="msg-item-contain">
+    <div ref="msg" :data-id="item.oId" class="msg-item-contain" @dblclick.stop="menuShow">
       <div class="msg-user" :title="item.userName">
         {{ item.userNickname || item.userName }}
       </div>
@@ -32,7 +32,12 @@
         <span class="plus-one" @click="followMsg(item)" v-if="plusOne">+1</span>
         <div class="msg-menu-btn" @click.stop="menuShow"><i class="fa fa-ellipsis-v"></i></div>
       </div>
-      <MessageMenu v-if="contextmenuId == item.oId" :pos="this.contextmenuPos" :item="item" :isCurrent="item.userName == current.userName" :menuTarget="menuTarget" 
+      <MessageMenu 
+        v-if="contextmenuId == item.oId" 
+        :pos="this.contextmenuPos" 
+        :item="item" 
+        :isCurrent="item.userName == current.userName" 
+        :menuTarget="$refs.msg" 
         @msg="$emit('msg', $event)" 
         @face="$emit('face', $event)"
         @quote="$emit('quote', $event)"/>
@@ -68,7 +73,6 @@ export default {
   },
   data() {
     return {
-      menuTarget: null,
     }
   },
   computed: {
@@ -102,7 +106,6 @@ export default {
       this.$emit('redpacket', rsp);
     },
     menuShow(ev) {
-      this.menuTarget = ev.target;
       let ele = this.$refs.msg;
       let pos = {
           x: ev.clientX < window.innerWidth / 2 ? 
@@ -160,7 +163,7 @@ export default {
   position: relative;
   max-width: 80vw;
   .msg-img {
-    padding: 10px;
+    padding: 10px 15px 10px 10px;
     display: inline-block;
   }
   .plus-one {
@@ -186,10 +189,11 @@ export default {
   .msg-menu-btn {
     display: none;
     position: relative;
-    left: -10px;
+    left: -15px;
     align-items: flex-end;
     bottom: 10px;
     cursor: pointer;
+    padding: 0 5px;
   }
 }
 
@@ -226,7 +230,7 @@ export default {
   .msg-menu-btn {
     color: var(--vscode-button-foreground);
     left: auto;
-    right: -10px;
+    right: -15px;
   }
 }
 .hidden {
@@ -237,10 +241,10 @@ export default {
 <style lang="less">
 .msg-img {
   img {
-    max-width: 60vw;
+    max-width: 55vw;
   }
   [alt="图片表情"] {
-    max-width: 150px;
+    max-width: 45vw;
   }
 }
 </style>

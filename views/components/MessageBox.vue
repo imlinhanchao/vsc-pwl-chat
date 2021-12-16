@@ -42,6 +42,12 @@
         <img :src="u.url" />
       </div>
     </section>
+    <section class="quote" v-if="quote">
+        <span class="quote-user" v-if="quote">回复：@{{quote.userName}} <i @click="quote=null" class="fa fa-times"></i></span>
+        <div class="quote-content">
+            <div class="quote-tip md-style" v-html="quote.content"></div>
+        </div>
+    </section>
   </div>
 </template>
 
@@ -73,6 +79,12 @@ export default {
   },
   mounted() {
       
+  },
+  watch: {
+    quote (val) {
+        if (val == null) this.message =  this.message.replace(/^并说：/, '');
+        else if(!this.message.startsWith('并说：')) this.message = '并说：' + this.message;
+    }
   },
   methods: {
     getEmoji(name) {
@@ -252,6 +264,29 @@ export default {
     img {
       width: 30px;
     }
+  }
+}
+.quote {
+  position: absolute;
+  top: 3em;
+  width: 100%;
+  .quote-user {
+    background: var(--vscode-button-background);
+    padding: 5px;
+    cursor: pointer;
+  }
+  &:hover {
+    .quote-content {
+      display: block;
+    }
+  }
+  .quote-content {
+    display: none;
+    position: absolute;
+    max-width: 80vw;
+    top: 2em;
+    background: rgba(69, 69, 69, .65);
+    padding: 5px;
   }
 }
 </style>
