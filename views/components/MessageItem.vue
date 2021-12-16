@@ -13,12 +13,8 @@
       <div class="msg-user" :title="item.userName">
         {{ item.userNickname || item.userName }}
       </div>
-      <MessageMenu v-if="contextmenuId == item.oId && false" :pos="this.contextmenuPos" :item="item" :isCurrent="item.userName == current.userName" :menuTarget="menuTarget" 
-        @msg="$emit('msg', $event)" 
-        @face="$emit('face', $event)"
-        @quote="$emit('quote', $event)"/>
       <RedpacketMsg :item="item" :isCurrent="item.userName == current.userName" @click="openRedpacket(item)"/>
-      <div class="msg-contain" v-if="!item.redpacket" @contextmenu="menuShow">
+      <div class="msg-contain" v-if="!item.redpacket">
         <div
           class="arrow"
           v-if="item.content.replace(/\n/g, '').match(/>[^<]+?</g)"
@@ -34,7 +30,12 @@
           v-html="formatContent(item.content)"
         ></span>
         <span class="plus-one" @click="followMsg(item)" v-if="plusOne">+1</span>
+        <div class="msg-menu-btn" @click.stop="menuShow"><i class="fa fa-ellipsis-v"></i></div>
       </div>
+      <MessageMenu v-if="contextmenuId == item.oId" :pos="this.contextmenuPos" :item="item" :isCurrent="item.userName == current.userName" :menuTarget="menuTarget" 
+        @msg="$emit('msg', $event)" 
+        @face="$emit('face', $event)"
+        @quote="$emit('quote', $event)"/>
     </div>
   </div>
 </template>
@@ -113,6 +114,7 @@ export default {
         id: this.item.oId,
         pos: pos,
       });
+      ev.preventDefault()
     }
   },
 };
@@ -176,6 +178,19 @@ export default {
     font-family: mononoki, Consolas, "Liberation Mono", Menlo, Courier,
       monospace;
   }
+  &:hover {
+    .msg-menu-btn {
+      display: flex;
+    }
+  }
+  .msg-menu-btn {
+    display: none;
+    position: relative;
+    left: -10px;
+    align-items: flex-end;
+    bottom: 10px;
+    cursor: pointer;
+  }
 }
 
 .msg-content {
@@ -194,11 +209,11 @@ export default {
   }
   .arrow {
     border-right-color: transparent;
-    border-left-color: var(--vscode-button-foreground);
+    border-left-color: var(--vscode-button-background);
   }
   .msg-content {
-    background-color: var(--vscode-button-foreground);
-    color: var(--vscode-scrollbarSlider-hoverBackground);
+    background-color: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
   }
   .msg-user {
     text-align: right;
@@ -207,6 +222,11 @@ export default {
   .plus-one {
     left: -1.5em;
     right: auto;
+  }
+  .msg-menu-btn {
+    color: var(--vscode-button-foreground);
+    left: auto;
+    right: -10px;
   }
 }
 .hidden {
