@@ -81,6 +81,7 @@ export default {
   name: "MessageBox",
   props: {
     quote: Object,
+    current: Object
   },
   watch: {
     message(val) {

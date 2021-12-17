@@ -10,7 +10,7 @@
         <div v-if="!current.userName" class="login-link">
           <a href="#" @click="login">登录</a>或<a href="https://pwl.icu/register?r=imlinhanchao">注册</a>后加入聊天室
         </div>
-        <MessageBox ref="msg" v-if="current.userName" :quote.sync="quote"></MessageBox>
+        <MessageBox ref="msg" v-if="current.userName" :quote.sync="quote" :current="current"></MessageBox>
         <MessageList ref="list" :current="current"
         @msg="appendMsg" 
         @face="addFace"
