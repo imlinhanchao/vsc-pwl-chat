@@ -15,6 +15,7 @@ new Vue({
     callback: {},
     isdev: !window.acquireVsCodeApi,
     emoji,
+    config: {}
   },
   mounted() {
     window.addEventListener('message', event => {
@@ -40,6 +41,11 @@ new Vue({
       let mat = url.match(/goto=(.*?)$/);
       if (mat) {url = decodeURIComponent(mat[1]);}
       link.href = url;
+    });
+    this.request('command', {
+      cmd: 'getConfig'
+    }).then((config)=> {
+      this.config = config;
     });
   },
   methods: {

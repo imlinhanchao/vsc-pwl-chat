@@ -45,6 +45,10 @@ class Command
         Utils.openUrl('https://pwl.icu/register?r=imlinhanchao');
     }
 
+    getConfig() {
+        return Utils.getConfig();
+    }
+
     async logout() {
         this.context.globalState.update('token', '');
         this.context.globalState.update('username', '');

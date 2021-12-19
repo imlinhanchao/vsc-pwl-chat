@@ -5,6 +5,7 @@
       v-bind:key="(item.type || 'msg') + '_' + item.oId + (item.whoGot || '')"
     >
       <MessageItem
+        v-if="false"
         @redpacket="showRedpacket(item, $event)"
         @msg="$emit('msg', $event)" 
         @face="$emit('face', $event)"
@@ -22,6 +23,17 @@
           item.oId == firstMsg.oId
         "
       ></MessageItem>
+      <MessageText
+        @redpacket="showRedpacket(item, $event)"
+        @msg="$emit('msg', $event)" 
+        @face="$emit('face', $event)"
+        @quote="$emit('quote', $event)"
+        :current="current"
+        :item.sync="item"
+        :contextmenuId.sync="contextmenuId"
+        :contextmenuPos.sync="contextmenuPos"
+        @menu="OnMenu"
+      ></MessageText>
     </div>
     <div class="msg-more" @click="load(page + 1)" v-if="content.length < 1999">
       <i class="fa fa-caret-down" v-if="!loading" />
@@ -32,6 +44,7 @@
 
 <script>
 import MessageItem from "./MessageItem.vue";
+import MessageText from "./MessageText.vue";
 
 export default {
   name: "MessageList",
@@ -44,7 +57,7 @@ export default {
     },
   },
   components: {
-    MessageItem,
+    MessageItem, MessageText,
   },
   data() {
     return {
