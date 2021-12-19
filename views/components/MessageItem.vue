@@ -32,6 +32,12 @@
         <span class="plus-one" @click="followMsg(item)" v-if="plusOne">+1</span>
         <div class="msg-menu-btn" @click.stop="menuShow"><i class="fa fa-ellipsis-v"></i></div>
       </div>
+      <div class="db-users" v-if="item.dbUser && item.dbUser.length">
+          <span class="db-user" :key="db.oId" v-for="db in item.dbUser" :title="db.userNickame || db.userName">
+              <span class="db-avatar avatar"><img :src="db.userAvatarURL" /></span>
+          </span>
+          <span class="db-word">也这么说</span>
+      </div>
       <MessageMenu 
         v-if="contextmenuId == item.oId" 
         :pos="this.contextmenuPos" 
@@ -236,6 +242,24 @@ export default {
 .hidden {
   visibility: hidden;
   position: absolute;
+}
+.db-users {
+  padding: 5px 0 5px 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  .db-user {
+    padding: 2px;
+  }
+  .db-avatar {
+    width: 25px;
+    height: 25px;
+  }
+  .db-word {
+    display: inline-block;
+    padding-left: 5px;
+  }
 }
 </style>
 <style lang="less">

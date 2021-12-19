@@ -87,9 +87,27 @@ export default {
       let oIds = this.content.map((c) => c.oId);
       let data = rsp.data.filter((d) => oIds.indexOf(d.oId) < 0);
       data.forEach((d) => (d.redpacket = this.getRedPacket(d)));
+      data = this.mergeDoubleMsg(data);
       if (page > 1) this.content = this.content.concat(data);
-      else this.content = rsp.data;
+      else this.content = data;
       this.page = page;
+    },
+    mergeDoubleMsg(contents) {
+      contents.forEach((c, i) => {
+        contents[i].dbUser = []
+        if (!contents[i - 1]) return;
+        if (c.content != contents[i - 1].content) return;
+        contents[i - 1].hide = true;
+        contents[i].dbUser = contents[i - 1].dbUser || [];
+        contents[i].dbUser.splice(0, 0, {
+          userName: contents[i - 1].userName,
+          userNickame: contents[i - 1].userNickame,
+          userAvatarURL: contents[i - 1].userAvatarURL,
+          oId: contents[i - 1].oId
+        })
+        contents[i - 1].dbUser = undefined;
+      });
+      return contents.filter(c => !c.hide);
     },
     clear() {
       this.contextmenuId = ''
@@ -136,7 +154,18 @@ export default {
               break;
             }
           }
-          this.content.splice(0, 0, msg);
+          msg.dbUser = []
+          if (msg.type == 'msg' 
+          && msg.content == this.content[0].content) {
+              this.content[0].dbUser = this.content[0].dbUser || []
+              this.content[0].dbUser.push({
+                  userName: msg.userName,
+                  userNickname: msg.userNickame,
+                  userAvatarURL: msg.userAvatarURL,
+                  oId: msg.oId
+              })
+          }
+          else this.content.splice(0, 0, msg)
           if (this.content.length > 2000) this.load(1);
           break;
       }

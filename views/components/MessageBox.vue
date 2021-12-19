@@ -217,7 +217,7 @@ export default {
         this.controlMore = false;
     },
     async uploadImg(ev) {
-        let files = Array.from(ev.target.files).map(f => f.path)
+        let files = Array.from(ev.target.files).map(f => f.path || f)
         if (files.length == 0) return;
         let rsp = await this.$root.request('upload', files);
         this.$refs['file'].value = '';
