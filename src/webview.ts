@@ -64,6 +64,13 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 		});
 	}
 
+	changeConfig() {
+		this._view?.webview.postMessage({
+			type: 'config',
+			data: Utils.getConfig()
+		});
+	}
+
 	private getHtml(webview: vscode.Webview) {
 		let exists = fs.existsSync(path.resolve(__dirname, '..', 'dev'));
 		let mainHtml = exists ? 

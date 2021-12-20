@@ -136,7 +136,6 @@ export default {
     max-width: 40vw;
     cursor: pointer;
     background: #fff;
-    width: 100%;
     &[alt="图片表情"] {
       background: transparent;
     }
