@@ -13,6 +13,10 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(ChatViewProvider.viewType, provider));
 
+	vscode.workspace.onDidChangeConfiguration((event) => {
+		provider.changeConfig();
+	})
+	
 }
 
 export function deactivate() {}

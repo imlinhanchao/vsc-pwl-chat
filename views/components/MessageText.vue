@@ -11,7 +11,7 @@
       <a v-if="item.redpacket"  class="redpacket" href="#" @click.stop="openRedpacket(item)">[收到一个红包]</a>
       <span class="msg-contain" v-if="!item.redpacket">
         <span
-          class="msg-content md-style"
+          class="msg-content txt-style"
           v-html="formatContent(item.content)"
         />
       </span>
@@ -83,6 +83,7 @@ export default {
         .replace(/<img\s+src="([^"]*?)"([^>]*?>)/g, '<a href="$1" class="image-link" target="_blank">[图片]</a>')
         .replace(/<(\/)*p[^>]*?>/g, '<$1span>')
         .replace(/<(\w+)>(.*?)<\/\1>/g, '<span>$2</span>')
+        .replace(/<iframe.*?<\/iframe>/g, '[内联网页]')
         .replace(new RegExp(`@${this.current.userName}`, 'g'), 
         `<b style="color:var(--vscode-button-background)">@${this.current.userName}</b>`)
     },
@@ -170,18 +171,117 @@ export default {
     height: 25px;
   }
   .db-word {
-    display: inline-block;
     padding-left: 5px;
   }
 }
 </style>
 <style lang="less">
-.msg-img {
-  img {
-    max-width: 55vw;
+.txt-style {
+  * {
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    line-height: 1.5;
   }
-  [alt="图片表情"] {
-    max-width: 45vw;
+  a {
+    border-bottom: 1px dashed var(--vscode-button-foreground);
+  }
+  img {
+    width: 0;
+    height: 0;
+  }
+  ul,
+  ol {
+    list-style-position: inside;
+  }
+  .msg-img {
+    img.emoji {
+      max-width: 40px;
+    }
+  }
+  img.emoji {
+    max-width: 20px;
+    cursor: auto;
+    vertical-align: middle;
+    background: transparent;
+  }
+  h1,
+  h2 {
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #eaecef;
+  }
+
+  hr {
+    background-color: #eaecef;
+  }
+
+  blockquote {
+    color: var(--vscode-input-placeholderForeground);
+    border-left: 0.25em inset var(--vscode-badge-foreground);
+    background-color: var(--vscode-scrollbarSlider-background);
+    padding: 2px 0 2px 5px;
+  }
+
+  iframe {
+    border: 1px solid #d1d5da;
+    width: 100%;
+  }
+
+  table {
+    border-collapse: collapse;
+    empty-cells: show;
+    margin-bottom: 16px;
+    overflow: auto;
+    border-spacing: 0;
+    display: block;
+    word-break: keep-all;
+    width: 100%;
+  }
+
+  table tr {
+    border-top: 1px solid #c6cbd1;
+    background-color: rgba(155, 155, 155, .3);
+  }
+
+  table td,
+  table th {
+    border: 1px solid rgba(138, 138, 138, .5);
+    padding: 5px;
+  }
+
+  table tbody tr:nth-child(2n) {
+    background-color: rgba(55, 55, 55, .3);
+  }
+
+  code:not(.hljs):not(.highlight-chroma) {
+    background-color: rgba(27, 31, 35, 0.05);
+  }
+
+  pre,
+  code {
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+  }
+
+  pre > code {
+    margin: 0;
+    font-size: 85%;
+    padding: 0.5em;
+    border-radius: 5px;
+    display: block;
+    overflow: auto;
+    white-space: pre;
+    font-family: mononoki, Consolas, "Liberation Mono", Menlo, Courier,
+      monospace;
+    word-break: initial;
+    word-wrap: normal;
+  }
+
+  kbd {
+    color: #24292e;
+    background-color: #fafbfc;
+    border: 1px solid #d1d5da;
+    box-shadow: inset 0 -1px 0 #d1d5da;
   }
 }
 </style>

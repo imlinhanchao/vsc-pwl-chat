@@ -4,8 +4,7 @@
       v-for="(item, i) in content"
       v-bind:key="(item.type || 'msg') + '_' + item.oId + (item.whoGot || '')"
     >
-      <MessageItem
-        v-if="false"
+      <MessageItem v-if="!isTextMode"
         @redpacket="showRedpacket(item, $event)"
         @msg="$emit('msg', $event)" 
         @face="$emit('face', $event)"
@@ -23,7 +22,7 @@
           item.oId == firstMsg.oId
         "
       ></MessageItem>
-      <MessageText
+      <MessageText v-if="isTextMode"
         @redpacket="showRedpacket(item, $event)"
         @msg="$emit('msg', $event)" 
         @face="$emit('face', $event)"
@@ -82,6 +81,9 @@ export default {
           !item.redpacket && !item.whoGot && item.oId != this.firstMsg.oId
       );
     },
+    isTextMode() {
+      return this.$root.config.viewType == '文字模式'
+    }
   },
   mounted() {
     this.load(1);
@@ -136,6 +138,9 @@ export default {
     },
     wsListener(event) {
       const message = event.data;
+      if (message.type == "config") {
+        this.$root.config = message.data;
+      }
       if (message.type != "websocket") return;
       this.wsMessage(message);
     },
