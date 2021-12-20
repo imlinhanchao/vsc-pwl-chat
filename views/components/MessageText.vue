@@ -8,7 +8,7 @@
       <a class="msg-user"  target="_blank" :href="`https://pwl.icu/member/${item.userName}`" :title="item.userName">
         {{ item.userNickname || item.userName }}
       </a><span>说: </span>
-      <a v-if="item.redpacket"  class="redpacket" href="#" @click.stop="openRedpacket(item)">[收到一个红包]</a>
+      <a v-if="item.redpacket"  class="redpacket" href="javascript:void(0)" @click.stop="openRedpacket(item)">[收到一个红包]</a>
       <span class="msg-contain" v-if="!item.redpacket">
         <span
           class="msg-content txt-style"
