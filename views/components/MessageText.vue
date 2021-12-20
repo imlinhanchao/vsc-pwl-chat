@@ -82,6 +82,8 @@ export default {
         .replace(/<img\s+src="([^"]*?)"\s+alt="图片表情"([^>]*?>)/g, '[动画表情]')
         .replace(/<img\s+src="([^"]*?)"([^>]*?>)/g, '<a href="$1" class="image-link" target="_blank">[图片]</a>')
         .replace(/<(\/)*p[^>]*?>/g, '<$1span>')
+        .replace(/<audio[^>]*?>.*?<\/audio>/g, '[音乐]')
+        .replace(/<video[^>]*?>.*?<\/video>/g, '[视频]')
         .replace(/<(\w+)>(.*?)<\/\1>/g, '<span>$2</span>')
         .replace(/<iframe.*?<\/iframe>/g, '[内联网页]')
         .replace(new RegExp(`@${this.current.userName}`, 'g'), 
