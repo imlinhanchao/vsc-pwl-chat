@@ -2,6 +2,11 @@
 
 All notable changes to the "pwl-chat" extension will be documented in this file.
 
+## [0.0.6] - 2021-12-20
+- 修正回复功能不可用问题；
+- 加入复读合并功能；
+- 加入设置选项 `View Type`，用于设置显示模式。
+
 ## [0.0.5] - 2021-12-17
 - 加入消息菜单，可以`@`用户，回复消息，收藏表情，撤回消息等；
 - 加入表情包功能；
