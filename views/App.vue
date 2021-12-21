@@ -42,11 +42,7 @@ export default {
     },
     methods: {
         async Init() {
-            if(await this.info())
-            {
-                await this.$root.emoji.load(this.$root);
-                // this.faces = emoji.urls;
-            }
+            await this.info()
         },
         clear () {
           if(this.$refs.msg)this.$refs.msg.clear()
@@ -59,6 +55,7 @@ export default {
                 return false;
             }
             this.current = rsp.data;
+            await this.$root.emoji.load(this.$root);
             return true;
         },
         async login() {
