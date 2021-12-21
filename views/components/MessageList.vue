@@ -15,7 +15,7 @@
         :contextmenuPos.sync="contextmenuPos"
         @menu="OnMenu"
         :plusOne="
-          item.dbUser.length && 
+          item.dbUser.length > 0 && 
           item.oId == firstMsg.oId
         "
       ></MessageItem>

@@ -193,7 +193,7 @@ export default {
             ? `@${this.quote.userName} `
             : "";
         this.message = `${at}引用：\n\n${raw}\n\n${this.message}`;
-        this.quote = null;
+        this.$emit('update:quote', null)
       }
       await this.wsSend(this.message, false);
       this.message = "";
