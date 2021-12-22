@@ -170,7 +170,7 @@ export default {
             }
           }
           msg.dbUser = []
-          if (msg.type == 'msg' 
+          if (msg.type == 'msg' && !msg.redpacket
           && msg.content == this.content[0].content) {
               this.content[0].dbUser = this.content[0].dbUser || []
               this.content[0].dbUser.push({
