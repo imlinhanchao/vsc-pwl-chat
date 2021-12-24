@@ -6,8 +6,11 @@
   >
     <div class="msg-avatar-box">
       <a target="_blank" :href="`https://pwl.icu/member/${item.userName}`">
-        <span class="msg-avatar avatar"><img :src="item.userAvatarURL"></span>
-        </a>
+        <div class="christmas" v-if="new Date().getMonth() == 11 && new Date().getDate() < 26 && new Date().getDate() > 23"></div>
+        <span class="msg-avatar avatar">
+          <img :src="item.userAvatarURL">
+        </span>
+      </a>
     </div>
     <div ref="msg" :data-id="item.oId" class="msg-item-contain" @dblclick.stop="menuShow">
       <div class="msg-user" :title="item.userName">
@@ -261,11 +264,32 @@ export default {
     padding-left: 5px;
   }
 }
+.msg-avatar-box {
+    position: relative;
+}
+.christmas {
+    position: absolute;
+    background: url(../assets/christmas.png) top left no-repeat;
+    width: 100%;
+    height: 100%;
+    background-size: 100% auto;
+    right: -14px;
+    transform: scaleX(-1);
+    top: 16px;
+    z-index: 9;
+}
+.msg-current {
+    .christmas {
+        transform: none;
+        right: auto;
+        left: -14px;
+    }
+}
 </style>
 <style lang="less">
 .msg-img {
   img {
-    max-width: 55vw;
+    max-width: 100%;
   }
   [alt="图片表情"] {
     max-width: 45vw;
