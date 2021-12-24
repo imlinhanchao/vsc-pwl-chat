@@ -2,6 +2,12 @@
 
 All notable changes to the "pwl-chat" extension will be documented in this file.
 
+## [0.0.7] - 2021-12-24
+- 修正登录后没有重新获取表情包问题；
+- 修正连发红包被折叠问题；
+- 修正历史红包可能合并问题；
+- 加入圣诞节彩蛋。
+
 ## [0.0.6] - 2021-12-20
 - 修正回复功能不可用问题；
 - 加入复读合并功能；
