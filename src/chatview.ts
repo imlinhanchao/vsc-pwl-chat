@@ -25,7 +25,7 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 		_token: vscode.CancellationToken,
 	) {
 		this._view = webviewView;
-		this._command.setWebview(this._view?.webview);
+		this._command.appendWebview(this._view?.webview);
 
 		webviewView.webview.options = {
 			enableScripts: true,

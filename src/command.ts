@@ -7,7 +7,7 @@ class Command
     info: any;
     token: string = '';
     pwl: PWL;
-    webview: vscode.Webview | undefined;
+    webviews: Array<vscode.Webview> | undefined;
     context: vscode.ExtensionContext;
     timer: NodeJS.Timer|undefined;
     userBar: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
@@ -24,7 +24,9 @@ class Command
         return [
             'login',
             'logout',
-            'register'
+            'register',
+            'textMode',
+            'richMode'
         ];
     }
 
@@ -37,8 +39,8 @@ class Command
         }
     }
 
-    setWebview(webview:vscode.Webview) {
-        this.webview = webview;
+    appendWebview(webview:vscode.Webview) {
+        this.webviews?.push(webview);
     }
 
     register() {
@@ -49,12 +51,20 @@ class Command
         return Utils.getConfig();
     }
 
+    textMode() {
+        vscode.workspace.getConfiguration().update('pwl-chat.viewType', '文字模式');
+    }
+    
+    richMode() {
+        vscode.workspace.getConfiguration().update('pwl-chat.viewType', '图文模式');
+    }
+    
     async logout() {
         this.context.globalState.update('token', '');
         this.context.globalState.update('username', '');
         this.context.globalState.update('passwd', '');
         this.pwl.token = '';
-        this.webview?.postMessage({ type: 'notice', cmd: 'logout'});
+        this.webviews?.forEach(w => w.postMessage({ type: 'notice', cmd: 'logout'}));
         this.userBar?.hide();			
     }
 
@@ -77,7 +87,7 @@ class Command
             this.token = data.Key;
             this.context.globalState.update('token', this.token);
             this.info = await this.pwl.info();
-            this.webview?.postMessage({ type: 'notice', cmd: 'login', data: this.info });
+            this.webviews?.forEach(w => w.postMessage({ type: 'notice', cmd: 'login', data: this.info }));
             this.info = this.info.data;
             
             this.userBar.tooltip = '点击退出登录';
