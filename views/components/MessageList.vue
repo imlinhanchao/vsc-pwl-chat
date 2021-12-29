@@ -112,13 +112,8 @@ export default {
         if (c.content != contents[i - 1].content) return;
         contents[i - 1].hide = true;
         contents[i].dbUser = contents[i - 1].dbUser || [];
-        contents[i].dbUser.splice(0, 0, {
-          userName: contents[i - 1].userName,
-          userNickame: contents[i - 1].userNickame,
-          userAvatarURL: contents[i - 1].userAvatarURL,
-          oId: contents[i - 1].oId
-        })
         contents[i - 1].dbUser = undefined;
+        contents[i].dbUser.splice(0, 0, contents[i - 1])
       });
       return contents.filter(c => !c.hide);
     },
@@ -153,7 +148,12 @@ export default {
           for (let i = 0; i < this.content.length; i++) {
             let c = this.content[i];
             if (c.oId != msg.oId) continue;
-            this.content.splice(i, 1);
+            if (this.content[i].dbUser && this.content[i].dbUser.length) {
+              let nextUser = this.content[i].dbUser.shift();
+              if(this.content[i].dbUser.length) nextUser.dbUser = this.content[i].dbUser;
+              this.content[i] = nextUser;
+            }
+            else this.content.splice(i, 1);
             break;
           }
           break;
@@ -174,12 +174,7 @@ export default {
           if (msg.type == 'msg' && !msg.redpacket
           && msg.content == this.content[0].content) {
               this.content[0].dbUser = this.content[0].dbUser || []
-              this.content[0].dbUser.push({
-                  userName: msg.userName,
-                  userNickname: msg.userNickame,
-                  userAvatarURL: msg.userAvatarURL,
-                  oId: msg.oId
-              })
+              this.content[0].dbUser.push(msg)
           }
           else this.content.splice(0, 0, msg)
           if (this.content.length > 2000) this.load(1);
