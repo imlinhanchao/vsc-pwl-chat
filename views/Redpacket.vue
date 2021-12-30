@@ -7,8 +7,25 @@
         <div v-if="!current.userName" class="login-link">
           <a href="#" @click="login">登录</a>或<a href="https://pwl.icu/register?r=imlinhanchao">注册</a>后加入聊天室
         </div>
-        <section>
-          
+        <section class="redpack-form">
+          <p>
+              <select name="redpack_type" id="redpack_type">
+                  <option value="random">拼手气红包</option>
+                  <option value="average">普通红包</option>
+                  <option value="specify">专属红包</option>
+                  <option value="heartbeat">心跳红包</option>
+              </select>
+          </p>
+          <p class="redpack-number">
+              <input type="number" placeholder="积分">
+              <input type="number" placeholder="个数">
+          </p>
+          <p>
+              <input type="text" placeholder="留言">
+          </p>
+          <p>
+              <button >包红包</button>
+          </p>
         </section>
     </div>
 </template>
@@ -77,6 +94,18 @@ export default {
 <style lang="less" scoped>
 .login-link {
     text-align: center;
+}
+.redpack-form {
+    >p {
+        display: flex;
+        align-items: center;
+        margin: 1em 0;
+        &.redpack-number {
+            input:nth-child(1) {
+                margin-right: 1em;
+            }
+        }
+    }
 }
 </style>
 <style lang="less">
