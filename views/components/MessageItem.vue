@@ -45,7 +45,7 @@
         v-if="contextmenuId == item.oId" 
         :pos="this.contextmenuPos" 
         :item="item" 
-        :isCurrent="item.userName == current.userName" 
+        :current="current" 
         :menuTarget="$refs.msg" 
         @msg="$emit('msg', $event)" 
         @face="$emit('face', $event)"

@@ -14,7 +14,7 @@
         :contextmenuId.sync="contextmenuId"
         :contextmenuPos.sync="contextmenuPos"
         @menu="OnMenu"
-        :plusOne="
+        :plusOne=" item.dbUser &&
           item.dbUser.length > 0 && 
           item.oId == firstMsg.oId
         "
@@ -147,6 +147,7 @@ export default {
         case "revoke": //撤回
           for (let i = 0; i < this.content.length; i++) {
             let c = this.content[i];
+            if (this.content[i].dbUser) this.content[i].dbUser = this.content[i].dbUser.filter(d => d.oId != msg.oId)
             if (c.oId != msg.oId) continue;
             if (this.content[i].dbUser && this.content[i].dbUser.length) {
               let nextUser = this.content[i].dbUser.shift();

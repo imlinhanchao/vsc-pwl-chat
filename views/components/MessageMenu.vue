@@ -6,10 +6,16 @@
   >
     <div
       class="msg-menu-item"
-      v-if="isCurrent"
-      @click="revokeMsg"
+      v-if="isCurrent || ['纪律委员', 'OP'].indexOf(current.userRole) >= 0"
+      @click="revokeMsg()"
     >
       撤回消息
+    </div>
+    <div class="msg-menu-item" 
+      v-if="item.dbUser && 
+        item.dbUser.length && ['纪律委员', 'OP'].indexOf(current.userRole) >= 0" 
+      @click="revokeAllMsg">
+      撤回复读
     </div>
     <div
       class="msg-menu-item"
@@ -42,10 +48,10 @@
 export default {
   name: "MessageMenu",
   props: {
-    isCurrent: {
-      type: Boolean,
+    current: {
+      type: Object,
       default() {
-        return false;
+        return {};
       },
     },
     item: {
@@ -71,6 +77,9 @@ export default {
         right: !this.pos.left ? this.pos.x + 'px' : undefined
       }
     },
+    isCurrent() {
+      return this.item.userName == this.current.userName
+    },
     isEmoji() {
       return (
         this.menuTarget.querySelector('img') != null &&
@@ -95,8 +104,19 @@ export default {
     appendMsg(msg) {
       this.$emit("msg", msg);
     },
-    async revokeMsg() {
-      let rsp = await this.$root.request('revoke', this.item.oId);
+    async revokeAllMsg() {
+      if ((await this.$root.request('confirm', { 
+        options: ['是', '否'], 
+        msg: '是否确定批量撤回所有复读消息？' 
+      })) != '是') return;
+      
+      let oIds = this.item.dbUser.map(i => i.oId).concat([this.item.oId]);
+      oIds.forEach(o => this.revokeMsg(o));
+    },
+    async revokeMsg(oId) {
+      console.log('revoke', oId);
+      oId = oId || this.item.oId;
+      let rsp = await this.$root.request('revoke', oId);
       if (!rsp) return;
       if (rsp.code != 0) {
         this.$root.msg('error', rsp.msg);
