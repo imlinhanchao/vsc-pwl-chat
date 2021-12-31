@@ -200,6 +200,7 @@ export default {
         (w) => w.userName == this.current.userName
       );
       redpacket.recivers = redpacket.recivers || [];
+      redpacket.recivers = redpacket.recivers.filter(r => r && typeof(r) == 'string');
       item.redpacket.readed = true;
       let specify = (redpacket.recivers.length && redpacket.recivers.indexOf(this.current.userName) >= 0)
       let msg;

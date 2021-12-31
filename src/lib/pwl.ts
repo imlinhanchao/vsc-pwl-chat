@@ -12,6 +12,7 @@ let pkg = packages as any;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 class PWL {
     token:string = '';
+    onlines:Array<any>=[];
     rws:ReconnectingWebSocket|null = null;
     private _timer:NodeJS.Timeout | null = null;
     constructor(token:string) {
@@ -247,6 +248,10 @@ class PWL {
         }
     }
 
+    getOnlines() {
+        return this.onlines;
+    }
+
     websocketInit(wsCallback:Function) {
         if (this.rws !== null) { this.rws.close(); }
         this.rws = new ReconnectingWebSocket(`wss://pwl.icu/chat-room-channel?apiKey=${this.token}`, [], {
@@ -264,6 +269,8 @@ class PWL {
         };
         this.rws.onmessage = (e) => {
             wsCallback(e);
+            let msg = JSON.parse(e.data);
+            if(msg.type === 'online') { this.onlines = msg.users; }
         };
         this.rws.onerror = (e) => {
         };

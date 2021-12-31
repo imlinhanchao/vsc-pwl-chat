@@ -72,7 +72,7 @@
       "activitybar": [
         {
           "id": "pwl-chat-view",
-          "title": "摸鱼派聊天室",
+          "title": "摸鱼派",
           "icon": "media/logo.svg"
         }
       ]
@@ -81,12 +81,12 @@
       "pwl-chat-view": [
         {
           "id": "pwl-chat.chatView",
-          "name": "摸鱼派聊天室",
+          "name": "聊天室",
           "type": "webview"
         },
         {
           "id": "pwl-chat.redpacketView",
-          "name": "摸鱼派发红包",
+          "name": "发红包",
           "type": "webview",
           "visibility": "collapsed"
         }
