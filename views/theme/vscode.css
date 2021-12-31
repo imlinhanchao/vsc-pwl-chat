@@ -50,7 +50,11 @@ button {
 	background: var(--vscode-button-background);
 }
 
-button:hover {
+input::-webkit-inner-spin-button {
+	background: var(--vscode-button-background);
+}
+
+button:hover, input::-webkit-inner-spin-button {
 	cursor: pointer;
 	background: var(--vscode-button-hoverBackground);
 }
@@ -69,6 +73,7 @@ button.secondary:hover {
 }
 
 input:not([type='checkbox']),
+select,
 textarea {
 	display: block;
 	width: 100%;

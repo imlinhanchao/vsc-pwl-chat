@@ -40,6 +40,14 @@
       {
         "command": "pwl-chat.register",
         "title": "摸鱼派: 注册账号(PWL Chatroom Register)"
+      },
+      {
+        "command": "pwl-chat.textMode",
+        "title": "摸鱼派: 文字模式(PWL Chatroom Text Mode)"
+      },
+      {
+        "command": "pwl-chat.richMode",
+        "title": "摸鱼派: 图文模式(PWL Chatroom Rich Mode)"
       }
     ],
     "configuration": {
@@ -75,6 +83,12 @@
           "id": "pwl-chat.chatView",
           "name": "摸鱼派聊天室",
           "type": "webview"
+        },
+        {
+          "id": "pwl-chat.redpacketView",
+          "name": "摸鱼派发红包",
+          "type": "webview",
+          "visibility": "collapsed"
         }
       ]
     }

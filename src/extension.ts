@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import Command from './command';
-import ChatViewProvider from './webview';
+import ChatViewProvider from './chatview';
+import RedpacketViewProvider from './redpacketview';
 
 export function activate(context: vscode.ExtensionContext) {
 	let commands = Command.commands;
@@ -8,14 +9,19 @@ export function activate(context: vscode.ExtensionContext) {
 	command.init();
 	commands.forEach( c => context.subscriptions.push(vscode.commands.registerCommand(`pwl-chat.${c}`, () => (command as any)[c](...arguments))));
 
-	const provider = new ChatViewProvider(context.extensionUri, command.pwl, command);
+	const chatProvider = new ChatViewProvider(context.extensionUri, command.pwl, command);
+	const redpacketProvider = new RedpacketViewProvider(context.extensionUri, command.pwl, command);
 
 	context.subscriptions.push(
-		vscode.window.registerWebviewViewProvider(ChatViewProvider.viewType, provider));
+		vscode.window.registerWebviewViewProvider(ChatViewProvider.viewType, chatProvider));
+
+	context.subscriptions.push(
+		vscode.window.registerWebviewViewProvider(RedpacketViewProvider.viewType, redpacketProvider));
 
 	vscode.workspace.onDidChangeConfiguration((event) => {
-		provider.changeConfig();
-	})
+		chatProvider.changeConfig();
+		redpacketProvider.changeConfig();
+	});
 	
 }
 
