@@ -254,7 +254,7 @@ class PWL {
 
     websocketInit(wsCallback:Function) {
         if (this.rws !== null) { this.rws.close(); }
-        this.rws = new ReconnectingWebSocket(`wss://pwl.icu/chat-room-channel?apiKey=${this.token}`, [], {
+        this.rws = new ReconnectingWebSocket(`wss://fishpi.cn/chat-room-channel?apiKey=${this.token}`, [], {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             WebSocket: WS,
             connectionTimeout: 10000
@@ -287,7 +287,7 @@ class PWL {
         } = opt;
 
         headers['User-Agent'] = `Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36`;
-        headers['Referer'] = 'https://pwl.icu/';
+        headers['Referer'] = 'https://fishpi.cn/';
 
         let options = {
             method, headers,
@@ -300,7 +300,7 @@ class PWL {
     
         let rsp:any;
         try {
-            rsp = await axios(`https://pwl.icu/${url}`, options);
+            rsp = await axios(`https://fishpi.cn/${url}`, options);
             return rsp;
         } catch (err) {
             if ((err as any).response.status === 401) { return (err as any).response; }

@@ -2,6 +2,9 @@
 
 All notable changes to the "pwl-chat" extension will be documented in this file.
 
+## [0.0.9] - 2021-01-05
+- 更新域名
+
 ## [0.0.8] - 2021-12-31
 - 修正复读折叠撤回 Bug。
 - 添加发送红包功能。

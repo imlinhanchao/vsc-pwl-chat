@@ -5,7 +5,7 @@
     :class="{ 'msg-current': item.userName == current.userName }"
   >
     <div ref="msg" :data-id="item.oId" class="msg-item-contain" @dblclick.stop="menuShow">
-      <a class="msg-user"  target="_blank" :href="`https://pwl.icu/member/${item.userName}`" :title="item.userName">
+      <a class="msg-user"  target="_blank" :href="`https://fishpi.cn/member/${item.userName}`" :title="item.userName">
         {{ item.userNickname || item.userName }}
       </a><span>说: </span>
       <a v-if="item.redpacket"  class="redpacket" href="javascript:void(0)" @click.stop="openRedpacket(item)">[收到一个红包]</a>

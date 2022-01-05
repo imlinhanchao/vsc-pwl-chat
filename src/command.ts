@@ -44,7 +44,7 @@ class Command
     }
 
     register() {
-        Utils.openUrl('https://pwl.icu/register?r=imlinhanchao');
+        Utils.openUrl('https://fishpi.cn/register?r=imlinhanchao');
     }
 
     getConfig() {

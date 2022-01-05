@@ -5,7 +5,7 @@
     :class="{ 'msg-current': item.userName == current.userName }"
   >
     <div class="msg-avatar-box">
-      <a target="_blank" :href="`https://pwl.icu/member/${item.userName}`">
+      <a target="_blank" :href="`https://fishpi.cn/member/${item.userName}`">
         <div class="christmas" v-if="new Date().getMonth() == 11 && new Date().getDate() < 26 && new Date().getDate() > 23"></div>
         <span class="msg-avatar avatar">
           <img :src="item.userAvatarURL">
