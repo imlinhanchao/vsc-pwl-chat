@@ -7,7 +7,7 @@ class Command
     info: any;
     token: string = '';
     pwl: PWL;
-    webviews: Array<vscode.Webview> | undefined;
+    webviews: Array<vscode.Webview> = [];
     context: vscode.ExtensionContext;
     timer: NodeJS.Timer|undefined;
     userBar: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
