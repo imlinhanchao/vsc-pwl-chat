@@ -50,6 +50,16 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 				case 'showbox':
 					Utils.showMessage(req.data);
 					return;
+				case 'playMusic':
+					req.rsp = await Utils.playMusic(req.data.url, req.data.loop, req.data.autoplay);
+					req.type = 'response';
+					this._view?.webview.postMessage(req);	
+					return;		
+				case 'fetchBuffer':
+					req.rsp = await Utils.fetchBuffer(req.data);
+					req.type = 'response';
+					this._view?.webview.postMessage(req);	
+					return;		
 				case 'confirm':
 					req.rsp = await Utils.confirm(req.data.msg, req.data.options);
 					req.type = 'response';

@@ -56,8 +56,8 @@
         "pwl-chat.viewType": {
           "type": "string",
           "enum": [
-              "图文模式",
-              "文字模式"
+            "图文模式",
+            "文字模式"
           ],
           "default": "图文模式",
           "markdownDescription": "聊天室显示模式，文字图片将隐藏一切图片与大多数样式。",
@@ -103,9 +103,11 @@
     "build": "vue-cli-service build"
   },
   "devDependencies": {
+    "@types/audio-play": "^2.3.0",
     "@types/glob": "^7.1.4",
     "@types/mocha": "^9.0.0",
     "@types/node": "14.x",
+    "@types/sound-play": "^1.1.0",
     "@types/vscode": "^1.62.0",
     "@types/ws": "^8.2.2",
     "@typescript-eslint/eslint-plugin": "^5.1.0",
@@ -126,9 +128,11 @@
     "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
+    "audio-play": "^2.3.1",
     "axios": "^0.24.0",
     "form-data": "^4.0.0",
     "reconnecting-websocket": "^4.4.0",
+    "sound-play": "^1.1.0",
     "utf-8-validate": "^5.0.2",
     "ws": "^8.3.0"
   }
