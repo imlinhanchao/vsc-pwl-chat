@@ -19,7 +19,7 @@ class Command
         this.pwl = new PWL(this.context.globalState.get('token') || '');
         this.account.username = this.context.globalState.get('username') || '';
         this.account.passwd = this.context.globalState.get('passwd') || '';
-        this.reloadHook();
+        this.reloadHook(false);
     }
 
     // 开放给用户呼叫的 Command 函数名
@@ -34,15 +34,18 @@ class Command
         ];
     }
 
-    reloadHook() {
+    reloadHook(notice=true) {
         if (!fs.existsSync(this.getConfig().hook)) { return; }
         if (this.hookjs) {
             delete require.cache[require.resolve(this.hookjs)];
         }
         this.hookjs = this.getConfig().hook;
         if(this.hookjs){
-            try { require(this.hookjs).init(this.context, this.context.globalState.get('token') || ''); } catch(e) { 
-                vscode.window.showErrorMessage(`Hook Init 失败：${(e as Error).message}`); 
+            try { 
+                require(this.hookjs).init(this.context, this.context.globalState.get('token') || ''); 
+                if (notice) { vscode.window.showInformationMessage('Hook 脚本已载入。'); }
+            } catch(e) { 
+                vscode.window.showErrorMessage(`Hook 脚本载入失败：${(e as Error).message}`); 
             }
         } 
     }

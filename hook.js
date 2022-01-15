@@ -36,7 +36,7 @@ module.exports = {
     /// - text:String 用户发送的聊天消息，包含复读消息，红包消息。
     /// return 你要发送的内容，不发送则返回空字符串或 null 或 undefined 或 false
     async sendMsgEvent(text) {
-        return text + ' :huaji:';
+        return text;
     },
 
     /// 活跃度获取，登录后定时 60s 触发
