@@ -2,7 +2,7 @@
   "name": "pwl-chat",
   "displayName": "摸鱼派聊天室",
   "description": "随时随地摸鱼聊天 https://fishpi.cn/",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "engines": {
     "vscode": "^1.62.0"
   },

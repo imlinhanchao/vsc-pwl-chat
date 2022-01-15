@@ -272,7 +272,7 @@ class PWL {
                 this.rws?.send('-hb-');
             }, 1000 * 60 * 3);
         };
-        this.rws.onmessage = (e) => {
+        this.rws.onmessage = async (e) => {
             let msg = JSON.parse(e.data);
             let data = {};
             switch(msg.type) {
@@ -302,7 +302,7 @@ class PWL {
                     break;
                 }
             }
-            try { if(Hook() && !Hook()?.messageEvent({type: msg.type, data })){ return; } } catch(e) { 
+            try { if(Hook() && !await Hook()?.messageEvent({type: msg.type, data })){ return; } } catch(e) { 
                 vscode.window.showErrorMessage(`Hook Message 失败：${(e as Error).message}`); 
             }
             wsCallback(e);

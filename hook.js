@@ -10,7 +10,6 @@ module.exports = {
     /// apiKey:String 用户 Api Key, 可用于调用摸鱼派 API，API 文档：https://fishpi.cn/article/1636516552191
     /// user: 登录用户信息
     loginEvent(apiKey, user) {
-        console.log(apiKey, user);
     },
 
     /// 退出登录事件
