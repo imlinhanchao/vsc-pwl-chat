@@ -1,7 +1,8 @@
 import Utils from './lib/utils';
 import PWL from './lib/pwl';
+import Hook from './lib/hook';
 import * as vscode from 'vscode';
-
+import * as fs from 'fs';
 class Command
 {
     info: any;
@@ -12,11 +13,13 @@ class Command
     timer: NodeJS.Timer|undefined;
     userBar: vscode.StatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
     account: Account = { username: '', passwd: ''};
+    hookjs: string | undefined;
     constructor(context: vscode.ExtensionContext) {
         this.context = context;
         this.pwl = new PWL(this.context.globalState.get('token') || '');
         this.account.username = this.context.globalState.get('username') || '';
         this.account.passwd = this.context.globalState.get('passwd') || '';
+        this.reloadHook();
     }
 
     // 开放给用户呼叫的 Command 函数名
@@ -26,8 +29,22 @@ class Command
             'logout',
             'register',
             'textMode',
-            'richMode'
+            'richMode',
+            'reloadHook'
         ];
+    }
+
+    reloadHook() {
+        if (!fs.existsSync(this.getConfig().hook)) { return; }
+        if (this.hookjs) {
+            delete require.cache[require.resolve(this.hookjs)];
+        }
+        this.hookjs = this.getConfig().hook;
+        if(this.hookjs){
+            try { require(this.hookjs).init(this.context, this.context.globalState.get('token') || ''); } catch(e) { 
+                vscode.window.showErrorMessage(`Hook Init 失败：${(e as Error).message}`); 
+            }
+        } 
     }
 
     async init() {
@@ -36,6 +53,9 @@ class Command
             this.userBar.tooltip = '点击退出登录';
             this.userBar.text = `摸鱼派: ${this.info.userNickname || this.info.userName}`;
             this.userBar.command = `pwl-chat.logout`;
+        }
+        else if (this.account.username && this.account.passwd) {
+            this.login(this.account);
         }
     }
 
@@ -65,14 +85,17 @@ class Command
         this.context.globalState.update('passwd', '');
         this.pwl.token = '';
         this.webviews?.forEach(w => w.postMessage({ type: 'notice', cmd: 'logout'}));
-        this.userBar?.hide();			
+        this.userBar?.hide();	
+        try { Hook()?.logoutEvent();	} catch(e) { 
+            vscode.window.showErrorMessage(`Hook Logout 失败：${(e as Error).message}`); 
+        }
     }
 
-    async login() {
+    async login(account?:Account) {
         try {
-            let username = await Utils.prompt('用户名', this.account.username) || '';
+            let username = account?.username || await Utils.prompt('用户名', this.account.username) || '';
             if (username === '') { return; }
-            let passwd = await Utils.prompt('密码', this.account.passwd || '', true) || '';
+            let passwd = account?.passwd || await Utils.prompt('密码', this.account.passwd || '', true) || '';
             if (passwd === '') { return; }
 
             let data = (await this.pwl.login({ username, passwd }));
@@ -96,6 +119,10 @@ class Command
             
             this.liveness(this.account);
 
+            try{ Hook()?.loginEvent(this.token, this.info); } catch(e) { 
+                vscode.window.showErrorMessage(`Hook Login 失败：${(e as Error).message}`); 
+            }
+
             return this.info;
         } catch (e) {
             vscode.window.showErrorMessage(`登录失败：${(e as Error).message}`);
@@ -104,11 +131,16 @@ class Command
 
     liveness(account: Account) {
         if (this.timer) { clearInterval(this.timer); }
+        let lastLiveness = 0;
         this.timer = setInterval(async () => {
             let liveness = await this.pwl.liveness();
-            if (liveness.code === 401) { this.pwl.login(account); }
-            else { this.userBar.text = `摸鱼派: ${this.info?.userNickname}(${liveness}%)`; }
-        }, 30000);
+            if (liveness.code === 401) { return this.pwl.login(account); }
+            lastLiveness = liveness || lastLiveness;
+            this.userBar.text = `摸鱼派: ${this.info?.userNickname}(${lastLiveness}%)`;
+            try { Hook()?.liveness(lastLiveness);	} catch(e) { 
+                vscode.window.showErrorMessage(`Hook Liveness 失败：${(e as Error).message}`); 
+            }
+        }, 60000);
 
         this.userBar.show();
     }

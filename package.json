@@ -2,7 +2,7 @@
   "name": "pwl-chat",
   "displayName": "摸鱼派聊天室",
   "description": "随时随地摸鱼聊天 https://fishpi.cn/",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "engines": {
     "vscode": "^1.62.0"
   },
@@ -48,6 +48,10 @@
       {
         "command": "pwl-chat.richMode",
         "title": "摸鱼派: 图文模式(PWL Chatroom Rich Mode)"
+      },
+      {
+        "command": "pwl-chat.reloadHook",
+        "title": "摸鱼派: 重载 Hook 脚本(PWL Chatroom Reload Hook)"
       }
     ],
     "configuration": {
@@ -65,6 +69,11 @@
             "完整显示模式，包含图片和红包内容",
             "仅显示文字，隐藏一切图片和大多数样式"
           ]
+        },
+        "pwl-chat.hook": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "扩展注入脚本本地路径。[[开发说明]](https://github.com/imlinhanchao/vsc-pwl-chat#%E6%89%A9%E5%B1%95%E6%B3%A8%E5%85%A5)"
         }
       }
     },

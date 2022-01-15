@@ -169,7 +169,7 @@ export default {
   }
 
   iframe {
-    border: 1px solid #d1d5da;
+    border: 0;
     width: 100%;
   }
 
