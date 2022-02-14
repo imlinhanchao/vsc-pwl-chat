@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -6,6 +7,7 @@ import axios from 'axios';
 import * as https from 'https';
 import ReconnectingWebSocket from "reconnecting-websocket";
 import WS from 'ws';
+import Hook from './hook';
 import * as packages from '../../package.json';
 let pkg = packages as any;
 
@@ -117,6 +119,9 @@ class PWL {
     async push(msg:string) {
         let rsp;
         try {
+            try { if (Hook()) { msg = await Hook()?.sendMsgEvent(msg); } } catch(e) { 
+                vscode.window.showErrorMessage(`Hook Send Message 失败：${(e as Error).message}`); 
+            }
             rsp = await this.request({
                 url: `chat-room/send`,
                 method: 'post',
@@ -267,10 +272,40 @@ class PWL {
                 this.rws?.send('-hb-');
             }, 1000 * 60 * 3);
         };
-        this.rws.onmessage = (e) => {
-            wsCallback(e);
+        this.rws.onmessage = async (e) => {
             let msg = JSON.parse(e.data);
-            if(msg.type === 'online') { this.onlines = msg.users; }
+            let data = {};
+            switch(msg.type) {
+                case 'online': {
+                    data = this.onlines = msg.users;
+                    break;
+                }
+                case 'revoke': {
+                    data = msg.oId;
+                    break;
+                }
+                case 'msg': {
+                    let { oId, time, userName, userNickname, userAvatarURL, content, md } = msg;
+                    try {
+                        let { msg, recivers, money, count, type, got, who, msgType } = JSON.parse(content);
+                        if (msgType === 'redPacket') {
+                            data = { msg, recivers, money, count, type, got, who };
+                            break;
+                        }
+                    } catch (e) {}
+                    data = { oId, time, userName, userNickname, userAvatarURL, content, md };
+                    break;
+                }
+                case 'redPacketStatus': {
+                    let { oId, count, got, whoGive, whoGot } = msg;
+                    data = { oId, count, got, whoGive, whoGot };
+                    break;
+                }
+            }
+            try { if(Hook() && !await Hook()?.messageEvent({type: msg.type, data })){ return; } } catch(e) { 
+                vscode.window.showErrorMessage(`Hook Message 失败：${(e as Error).message}`); 
+            }
+            wsCallback(e);
         };
         this.rws.onerror = (e) => {
         };

@@ -102,6 +102,7 @@ export default {
     },
     formatContent(content) {
       return content
+        .replace(/<audio[^>]*>\s*<source src="([^"]*?key=userVoice)"[^>]*>\s*<\/audio>/g, '<div class="voice" data-url="$1"></div>')
         .replace(/(<a )/g, '$1target="_blank" data-action="open-link"')
         .replace(/<img\s+src="([^"]*?)"([^>]*?>)/g, '<a href="$1" class="image-link" target="_blank"><img src="$1" data-action="preview" $2</a>');
     },
@@ -293,6 +294,31 @@ export default {
   }
   [alt="图片表情"] {
     max-width: 45vw;
+  }
+}
+.voice {
+  height: 1.5em;
+  width: 60px;
+  background: url(../assets/voice.png) left top no-repeat;
+  background-size: 1.5em auto;
+}
+.voice-play {
+  animation: voiceplay 2s infinite step-start;
+} 
+.msg-current {
+  .voice {
+    transform:scaleX(-1);
+  }
+}
+@keyframes voiceplay{
+  0%, 100%{
+    background-position: 0 -3em; 
+  }
+  33.333%{
+    background-position: 0 -1.5em;
+  }
+  66.666%{
+    background-position: 0 0;
   }
 }
 </style>

@@ -35,12 +35,15 @@ new Vue({
       }
     });
     document.addEventListener('click', (ev) => {
-      let link = ev.target;
-      if (link.nodeName.toLowerCase() !== 'a' || link.dataset.action !== 'open-link') {return;}
-      let url = link.href;
+      let ele = ev.target;
+      if (ele.classList.contains('voice')) {
+        this.toggleVoice(ele);
+      }
+      if (ele.nodeName.toLowerCase() !== 'a' || ele.dataset.action !== 'open-link') {return;}
+      let url = ele.href;
       let mat = url.match(/goto=(.*?)$/);
       if (mat) {url = decodeURIComponent(mat[1]);}
-      link.href = url;
+      ele.href = url;
     });
     this.request('command', {
       cmd: 'getConfig'
@@ -65,6 +68,21 @@ new Vue({
     },
     msg(type, msg) {
       this.request('showbox', { type, msg });
+    },
+    async toggleVoice(ele) {
+      if (!ele.classList.contains('voice') 
+      || ele.classList.contains('voice-play')) return;
+      ele.classList.add('voice-play');
+      let url = ele.dataset.url;
+      await this.playMusic(url);
+      ele.classList.remove('voice-play');
+    },
+    async playMusic(url) {
+      try {
+        await this.request('playMusic', { url, loop: false, autoplay: true });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 }).$mount('#app');

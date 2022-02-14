@@ -6,19 +6,6 @@
   >
     <div
       class="msg-menu-item"
-      v-if="isCurrent || ['纪律委员', 'OP'].indexOf(current.userRole) >= 0"
-      @click="revokeMsg()"
-    >
-      撤回消息
-    </div>
-    <div class="msg-menu-item" 
-      v-if="item.dbUser && 
-        item.dbUser.length && ['纪律委员', 'OP'].indexOf(current.userRole) >= 0" 
-      @click="revokeAllMsg">
-      撤回复读
-    </div>
-    <div
-      class="msg-menu-item"
       v-if="!isCurrent"
       @click="atMsg"
     >
@@ -40,6 +27,19 @@
     </div>
     <div class="msg-menu-item" v-if="!item.redpacket" @click="quoteMsg">
       回复
+    </div>
+    <div
+      class="msg-menu-item"
+      v-if="isCurrent || ['纪律委员', 'OP', '管理员'].indexOf(current.userRole) >= 0"
+      @click="revokeMsg()"
+    >
+      撤回消息
+    </div>
+    <div class="msg-menu-item" 
+      v-if="item.dbUser && 
+        item.dbUser.length && ['纪律委员', 'OP', '管理员'].indexOf(current.userRole) >= 0" 
+      @click="revokeAllMsg">
+      撤回复读
     </div>
   </div>
 </template>

@@ -62,11 +62,9 @@ export default {
             let rsp = await this.$root.request('command', {
                 cmd: 'login'
             });
+            console.log(rsp)
             if (!rsp) return false;
-            if (rsp.code != 0) {
-                return false;
-            }
-            this.current = rsp.data;
+            this.current = rsp;
             await this.Init();
         },
         appendMsg(msg) {
@@ -89,6 +87,7 @@ export default {
         noticeListener(event) {
             const message = event.data;
             if (message.type != 'notice') return;
+            console.log(message.cmd);
             switch(message.cmd)
             {
                 case 'login':
@@ -170,7 +169,7 @@ export default {
   }
 
   iframe {
-    border: 1px solid #d1d5da;
+    border: 0;
     width: 100%;
   }
 

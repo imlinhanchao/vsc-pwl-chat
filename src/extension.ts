@@ -21,6 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.workspace.onDidChangeConfiguration((event) => {
 		chatProvider.changeConfig();
 		redpacketProvider.changeConfig();
+		if(event.affectsConfiguration('pwl-chat.hook')) { command.reloadHook(); }
 	});
 	
 }

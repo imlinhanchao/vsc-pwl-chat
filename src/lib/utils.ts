@@ -5,6 +5,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as packages from '../../package.json';
 import * as crypto from 'crypto';
+import axios from 'axios';
+import { play as soundPlay } from 'sound-play';
 
 let pkg = packages as any;
 
@@ -247,6 +249,21 @@ function showMessage(data:any) {
     }
 }
 
+async function fetchBuffer(url:string) {
+    let rsp = await axios(url, {
+        responseType: 'arraybuffer'
+    });
+    return rsp.data;
+}
+
+async function playMusic(url:string, loop:boolean, autoplay: boolean) {
+    let buffer = await fetchBuffer(url);
+    let tmpPath = path.resolve(tmpdir(), hash(buffer) + path.extname(new URL(url).pathname
+    ));
+    if(!fs.existsSync(tmpPath)) fs.writeFileSync(tmpPath, buffer);
+    return await soundPlay(tmpPath);
+}
+
 export default {
     showProgress,
     showMessage,
@@ -261,4 +278,6 @@ export default {
     confirm,
     prompt,
     hash,
+    fetchBuffer,
+    playMusic
 };

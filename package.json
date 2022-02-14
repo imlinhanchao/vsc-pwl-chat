@@ -2,7 +2,7 @@
   "name": "pwl-chat",
   "displayName": "摸鱼派聊天室",
   "description": "随时随地摸鱼聊天 https://fishpi.cn/",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "engines": {
     "vscode": "^1.62.0"
   },
@@ -48,6 +48,10 @@
       {
         "command": "pwl-chat.richMode",
         "title": "摸鱼派: 图文模式(PWL Chatroom Rich Mode)"
+      },
+      {
+        "command": "pwl-chat.reloadHook",
+        "title": "摸鱼派: 重载 Hook 脚本(PWL Chatroom Reload Hook)"
       }
     ],
     "configuration": {
@@ -56,8 +60,8 @@
         "pwl-chat.viewType": {
           "type": "string",
           "enum": [
-              "图文模式",
-              "文字模式"
+            "图文模式",
+            "文字模式"
           ],
           "default": "图文模式",
           "markdownDescription": "聊天室显示模式，文字图片将隐藏一切图片与大多数样式。",
@@ -65,6 +69,11 @@
             "完整显示模式，包含图片和红包内容",
             "仅显示文字，隐藏一切图片和大多数样式"
           ]
+        },
+        "pwl-chat.hook": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "扩展注入脚本本地路径。[[开发说明]](https://github.com/imlinhanchao/vsc-pwl-chat#%E6%89%A9%E5%B1%95%E6%B3%A8%E5%85%A5)"
         }
       }
     },
@@ -103,9 +112,11 @@
     "build": "vue-cli-service build"
   },
   "devDependencies": {
+    "@types/audio-play": "^2.3.0",
     "@types/glob": "^7.1.4",
     "@types/mocha": "^9.0.0",
     "@types/node": "14.x",
+    "@types/sound-play": "^1.1.0",
     "@types/vscode": "^1.62.0",
     "@types/ws": "^8.2.2",
     "@typescript-eslint/eslint-plugin": "^5.1.0",
@@ -119,6 +130,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "glob": "^7.1.7",
+    "less": "^4.1.2",
     "less-loader": "^5.0.0",
     "mocha": "^9.1.3",
     "typescript": "^4.4.4",
@@ -126,9 +138,11 @@
     "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
+    "audio-play": "^2.3.1",
     "axios": "^0.24.0",
     "form-data": "^4.0.0",
     "reconnecting-websocket": "^4.4.0",
+    "sound-play": "^1.1.0",
     "utf-8-validate": "^5.0.2",
     "ws": "^8.3.0"
   }
