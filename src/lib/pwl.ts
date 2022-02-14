@@ -303,7 +303,7 @@ class PWL {
             rsp = await axios(`https://fishpi.cn/${url}`, options);
             return rsp;
         } catch (err) {
-            if ((err as any).response.status === 401) { return (err as any).response; }
+            if ((err as any).response?.status === 401) { return (err as any).response; }
             throw(err);
         }
     }
