@@ -2,6 +2,9 @@
 
 All notable changes to the "pwl-chat" extension will be documented in this file.
 
+## [0.0.14] - 2021-05-03
+- 添加二次登录码；
+
 ## [0.0.10] - 2021-01-10
 - 修正登录注销不同步更新 UI 问题；
 - 修正管理员角色不能撤回消息问题；
