@@ -1,6 +1,7 @@
 declare type Account = {
     username: string;
-    passwd: string
+    passwd: string;
+    mfaCode?: string;
 } 
 
 declare module "*.json" {

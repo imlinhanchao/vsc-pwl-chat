@@ -102,6 +102,10 @@ class Command
             if (passwd === '') { return; }
 
             let data = (await this.pwl.login({ username, passwd }));
+            if (data.msg.startsWith('两步验证失败')) {
+                let mfaCode = await Utils.prompt('二次验证码');
+                data = (await this.pwl.login({ username, passwd, mfaCode }));
+            }
             if (data.code !== 0) {
                 throw new Error(data.msg);
             }

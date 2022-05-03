@@ -15,6 +15,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 class PWL {
     token:string = '';
     onlines:Array<any>=[];
+    discusse:string = '';
     rws:ReconnectingWebSocket|null = null;
     private _timer:NodeJS.Timeout | null = null;
     constructor(token:string) {
@@ -30,7 +31,8 @@ class PWL {
                 method: 'post',
                 data: {
                     nameOrEmail: data.username,
-                    userPassword: md5.update(data.passwd).digest('hex')
+                    userPassword: md5.update(data.passwd).digest('hex'),
+                    mfaCode: data.mfaCode || ''
                 },
             });
 
@@ -278,6 +280,11 @@ class PWL {
             switch(msg.type) {
                 case 'online': {
                     data = this.onlines = msg.users;
+                    this.discusse = msg.discussing;
+                    break;
+                }
+                case 'discussChanged': {
+                    data = msg.newDiscuss;
                     break;
                 }
                 case 'revoke': {

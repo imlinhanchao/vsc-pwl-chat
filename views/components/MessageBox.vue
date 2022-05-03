@@ -107,10 +107,13 @@ export default {
       controlMore: false,
       faceForm: false,
       faces: [],
+      discusse: '',
     };
   },
   mounted() {
       this.faces = this.$root.emoji.urls;
+      window.removeEventListener("message", this.wsListener);
+      window.addEventListener("message", this.wsListener);
       // document.removeEventListener('paste', this.onPaste);
       // document.addEventListener('paste', this.onPaste);
   },
@@ -120,6 +123,22 @@ export default {
     }
   },
   methods: {
+    wsListener(event) {
+      if (message.type != "websocket") return;
+      this.wsMessage(message);
+    },
+    wsMessage(ev) {
+      let msg = JSON.parse(ev.data);
+
+      switch (msg.type) {
+        case 'online': 
+          this.discusse = msg.discussing;
+          break;
+        case 'discussChanged':
+          this.discusse = msg.newDiscuss;
+          break;
+      }
+    },
     clear() {
       this.controlMore = false;
       this.faceForm = false;
