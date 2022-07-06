@@ -2,6 +2,9 @@
 
 All notable changes to the "pwl-chat" extension will be documented in this file.
 
+## [0.0.15] - 2022-07-06
+- 更新 Emoji 地址
+
 ## [0.0.14] - 2021-05-03
 - 添加二次登录码；
 
