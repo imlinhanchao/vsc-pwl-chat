@@ -77,6 +77,8 @@
 </template>
 
 <script>
+import * as packages from '../../package.json';
+
 export default {
   name: "MessageBox",
   props: {
@@ -124,16 +126,13 @@ export default {
   },
   methods: {
     wsListener(event) {
-      if (message.type != "websocket") return;
+      if (this.message.type != "websocket") return;
       this.wsMessage(message);
     },
     wsMessage(ev) {
       let msg = JSON.parse(ev.data);
 
       switch (msg.type) {
-        case 'online': 
-          this.discusse = msg.discussing;
-          break;
         case 'discussChanged':
           this.discusse = msg.newDiscuss;
           break;
@@ -214,7 +213,7 @@ export default {
         this.message = `${at}引用：\n\n${raw}\n\n${this.message}`;
         this.$emit('update:quote', null)
       }
-      await this.wsSend(this.message, false);
+      await this.wsSend(this.message + `<span class="vscode-extension-message ver-${packages.version}"/>`, false);
       this.message = "";
       window.scrollTo(0, 0);
       return true;

@@ -16,7 +16,7 @@
       <div class="msg-user" :title="item.userName">
         {{ item.userNickname || item.userName }}
       </div>
-      <RedpacketMsg :item="item" :isCurrent="item.userName == current.userName" @click="openRedpacket(item)"/>
+      <RedpacketMsg :item="item" :isCurrent="item.userName == current.userName" @click="getsture => openRedpacket(item, getsture)"/>
       <div class="msg-contain" v-if="!item.redpacket">
         <div
           class="arrow"
@@ -110,8 +110,8 @@ export default {
       let raw = await this.$root.request("raw", item.oId);
       this.$root.request("push", raw);
     },
-    async openRedpacket(item) {
-      let rsp = await this.$root.request('openRedpacket', item.oId);
+    async openRedpacket(item, gesture) {
+      let rsp = await this.$root.request('openRedpacket', { oId: item.oId, gesture});
       if (!rsp) return;
       this.$emit('redpacket', rsp);
     },

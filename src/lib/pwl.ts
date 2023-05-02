@@ -197,7 +197,7 @@ class PWL {
         }
     }
 
-    async openRedpacket(oId:string) {
+    async openRedpacket({ oId, gesture }: { oId :string, gesture: number | undefined}) {
         let rsp;
         try {
             rsp = await this.request({
@@ -205,6 +205,7 @@ class PWL {
                 method: 'post',
                 data: {
                     oId,
+                    gesture,
                     apiKey: this.token
                 },
             });

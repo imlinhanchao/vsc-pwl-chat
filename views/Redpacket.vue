@@ -25,7 +25,10 @@
             </p>
             <p class="redpack-number">
                 <input type="number" placeholder="积分" v-model="redpacket.money" :min="32">
-                <input type="number" placeholder="个数" v-model="redpacket.count" :min="minCount">
+                <input type="number" v-if="redpacket.type != 'rockPaperScissors'" placeholder="个数" v-model="redpacket.count" :min="minCount">
+                <select v-if="redpacket.type == 'rockPaperScissors'" v-model="redpacket.gesture">
+                    <option v-for="t in gestureType" :value="t.value">{{t.label}}</option>
+                </select>
             </p>
             <p>
                 <input type="text" :placeholder="defaultRedpackWord[redpacket.type]" v-model="redpacket.msg">
@@ -51,7 +54,8 @@ export default {
                 money: 32,
                 count: 2,
                 msg: '',
-                recivers: []
+                recivers: [],
+                gesture: 0
             },
         }
     },
@@ -62,6 +66,14 @@ export default {
                 { label: '普通红包', value: 'average' },
                 { label: '专属红包', value: 'specify' },
                 { label: '心跳红包', value: 'heartbeat' },
+                { label: '猜拳红包', value: 'rockPaperScissors' },
+            ]
+        },
+        gestureType() {
+            return [
+                { label: '石头', value: 0 },
+                { label: '剪刀', value: 1 },
+                { label: '布', value: 2 },
             ]
         },
         defaultRedpackWord() {
@@ -69,7 +81,8 @@ export default {
                 random: '摸鱼者，事竟成！',
                 average: '平分红包，人人有份！',
                 specify: '试试看，这是给你的红包吗？',
-                heartbeat: '玩的就是心跳！'
+                heartbeat: '玩的就是心跳！',
+                rockPaperScissors: '剪刀石头布！'
             }
         },
         minCount() {
