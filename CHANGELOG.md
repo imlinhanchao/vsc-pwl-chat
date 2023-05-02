@@ -2,6 +2,10 @@
 
 All notable changes to the "pwl-chat" extension will be documented in this file.
 
+## [0.0.16] - 2023-05-02
+- 添加猜拳红包支援；
+- 添加消息来源标记；
+
 ## [0.0.15] - 2022-07-06
 - 更新 Emoji 地址
 
