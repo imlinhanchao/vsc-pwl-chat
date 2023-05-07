@@ -129,6 +129,7 @@ class PWL {
                 method: 'post',
                 data: {
                     content: msg,
+                    client: `vscode/${pkg.version}`,
                     apiKey: this.token
                 },
             });
