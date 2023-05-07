@@ -2,6 +2,9 @@
 
 All notable changes to the "pwl-chat" extension will be documented in this file.
 
+## [0.0.18] - 2023-05-07
+- 修正来源标识；
+
 ## [0.0.17] - 2023-05-07
 - 添加发送来源；
 
