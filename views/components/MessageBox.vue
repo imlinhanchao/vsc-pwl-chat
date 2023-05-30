@@ -1,5 +1,8 @@
 <template>
   <div class="msg-box">
+    <!-- <section class="discusse" v-if="discusse">
+      <a href="javascript:void(0)" @click="message += discusse">#{{discusse}}#</a> 
+    </section> -->
     <input ref="message"
       type="text"
       placeholder="简单聊聊"
@@ -131,8 +134,11 @@ export default {
     },
     wsMessage(ev) {
       let msg = JSON.parse(ev.data);
-
+      console.log('message', msg)
       switch (msg.type) {
+        case 'online':
+          this.discusse = msg.discussing;
+          break;
         case 'discussChanged':
           this.discusse = msg.newDiscuss;
           break;

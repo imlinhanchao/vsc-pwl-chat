@@ -278,10 +278,11 @@ class PWL {
         };
         this.rws.onmessage = async (e) => {
             let msg = JSON.parse(e.data);
-            let data = {};
+            let data: any = {};
             switch(msg.type) {
                 case 'online': {
                     data = this.onlines = msg.users;
+                    data.discussing = msg.discusse;
                     this.discusse = msg.discussing;
                     break;
                 }
