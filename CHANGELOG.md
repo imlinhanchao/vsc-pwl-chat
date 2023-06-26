@@ -2,6 +2,12 @@
 
 All notable changes to the "pwl-chat" extension will be documented in this file.
 
+## [0.0.20] - 2023-06-26
+- 移除多余尾巴；
+  
+## [0.0.19] - 2023-05-30
+- 更新 LOGO；
+
 ## [0.0.18] - 2023-05-07
 - 修正来源标识；
 

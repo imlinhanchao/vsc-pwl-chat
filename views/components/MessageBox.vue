@@ -219,7 +219,7 @@ export default {
         this.message = `${at}引用：\n\n${raw}\n\n${this.message}`;
         this.$emit('update:quote', null)
       }
-      await this.wsSend(this.message + `<span class="vscode-extension-message ver-${packages.version}"/>`, false);
+      await this.wsSend(this.message, false);
       this.message = "";
       window.scrollTo(0, 0);
       return true;
