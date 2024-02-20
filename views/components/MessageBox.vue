@@ -1,82 +1,84 @@
 <template>
-  <div class="msg-box">
-    <!-- <section class="discusse" v-if="discusse">
-      <a href="javascript:void(0)" @click="message += discusse">#{{discusse}}#</a> 
-    </section> -->
-    <input ref="message"
-      type="text"
-      placeholder="简单聊聊"
-      v-model="message"
-      @keyup.enter="send"
-      @keyup.up="selList(-1)"
-      @keyup.down="selList(1)"
-      @keyup.left="selList(-1)"
-      @keyup.right="selList(1)"
-    />
-    <span class="msg-control">
-        <span class="msg-btn">
-            <button @click="send">
-                <i class="fa fa-paper-plane"></i>
-            </button>
-            <button @click.stop="controlMore=!controlMore" class="more fa fa-caret-down"></button>
-        </span>
-        <span class="msg-control-more" v-show="controlMore" >
-          <button class="msg-control-item" @click.stop="imageHandle" title="上传图片">
-              <i class="fa fa-picture-o"/>
-          </button>
-          <button class="msg-control-item" @click.stop="faceHandle" title="发表情">
-              <i class="fa fa-smile-o"/>
-          </button>
-        </span>
-        <input type="file" name="images" accept="image/*" ref="file" v-show="false" @change="uploadImg">
-    </span>
-    <section class="at-list" v-if="atList.length">
-      <div
-        class="at-item"
-        @click="atUser(i)"
-        :class="{ 'current-at': currentSel == i }"
-        v-for="(u, i) in atList"
-      >
-        <span class="avatar"><img :src="u.userAvatarURL" /></span> {{ u.userName }}
-      </div>
+  <section>
+    <section class="discusse" v-if="discusse">
+      <a href="javascript:void(0)" @click="message += `*\`# ${discusse} #\`*`">#{{discusse}}#</a> 
     </section>
-    <section class="emoji-list" v-if="emojiList.length">
-      <div
-        class="emoji-item"
-        @click="addEmoji(i)"
-        :class="{ 'current-at': currentSel == i }"
-        v-for="(u, i) in emojiList"
-      >
-        <img :src="u.url" />
-      </div>
-    </section>
-    <section class="quote" v-if="quote">
-        <span class="quote-user" v-if="quote">回复：@{{quote.userName}} <i @click="quote=null" class="fa fa-times"></i></span>
-        <div class="quote-content">
-            <div class="quote-tip md-style" v-html="quote.content"></div>
-        </div>
-    </section>
-    <article class="face-list face-diy" v-show="faceForm">
-        <section :ref="`face-${i}`"
-            class="face-item" v-for="(u, i) in faces" 
-            @click="sendFace(emoji.get(u))">
-          <span class="face-space" 
-            :style="{ backgroundImage: `url(${u})`}" 
-          ></span>
-          <span class="face-remove" @click.stop="removeFace(u)">
-              <button class="btn-text"><svg style="width: 15px; height: 15px;"><use xlink:href="#delIcon"></use></svg>
+    <div class="msg-box">
+      <input ref="message"
+        type="text"
+        placeholder="简单聊聊"
+        v-model="message"
+        @keyup.enter="send"
+        @keyup.up="selList(-1)"
+        @keyup.down="selList(1)"
+        @keyup.left="selList(-1)"
+        @keyup.right="selList(1)"
+      />
+      <span class="msg-control">
+          <span class="msg-btn">
+              <button @click="send">
+                  <i class="fa fa-paper-plane"></i>
               </button>
+              <button @click.stop="controlMore=!controlMore" class="more fa fa-caret-down"></button>
           </span>
-          <div class="msg-quote-tip" slot="content">
-              <img :src="u">
+          <span class="msg-control-more" v-show="controlMore" >
+            <button class="msg-control-item" @click.stop="imageHandle" title="上传图片">
+                <i class="fa fa-picture-o"/>
+            </button>
+            <button class="msg-control-item" @click.stop="faceHandle" title="发表情">
+                <i class="fa fa-smile-o"/>
+            </button>
+          </span>
+          <input type="file" name="images" accept="image/*" ref="file" v-show="false" @change="uploadImg">
+      </span>
+      <section class="at-list" v-if="atList.length">
+        <div
+          class="at-item"
+          @click="atUser(i)"
+          :class="{ 'current-at': currentSel == i }"
+          v-for="(u, i) in atList"
+        >
+          <span class="avatar"><img :src="u.userAvatarURL" /></span> {{ u.userName }}
+        </div>
+      </section>
+      <section class="emoji-list" v-if="emojiList.length">
+        <div
+          class="emoji-item"
+          @click="addEmoji(i)"
+          :class="{ 'current-at': currentSel == i }"
+          v-for="(u, i) in emojiList"
+        >
+          <img :src="u.url" />
+        </div>
+      </section>
+      <section class="quote" v-if="quote">
+          <span class="quote-user" v-if="quote">回复：@{{quote.userName}} <i @click="quote=null" class="fa fa-times"></i></span>
+          <div class="quote-content">
+              <div class="quote-tip md-style" v-html="quote.content"></div>
           </div>
-        </section>
-        <section class="face-add" title="上传表情" @click="$refs['facefile'].click()">
-            <i class="fa fa-plus" />
-            <input type="file" name="images" accept="image/*" ref="facefile" v-show="false" @change="uploadFace">
-        </section>
-    </article>
-  </div>
+      </section>
+      <article class="face-list face-diy" v-show="faceForm">
+          <section :ref="`face-${i}`"
+              class="face-item" v-for="(u, i) in faces" 
+              @click="sendFace(emoji.get(u))">
+            <span class="face-space" 
+              :style="{ backgroundImage: `url(${u})`}" 
+            ></span>
+            <span class="face-remove" @click.stop="removeFace(u)">
+                <button class="btn-text"><svg style="width: 15px; height: 15px;"><use xlink:href="#delIcon"></use></svg>
+                </button>
+            </span>
+            <div class="msg-quote-tip" slot="content">
+                <img :src="u">
+            </div>
+          </section>
+          <section class="face-add" title="上传表情" @click="$refs['facefile'].click()">
+              <i class="fa fa-plus" />
+              <input type="file" name="images" accept="image/*" ref="facefile" v-show="false" @change="uploadFace">
+          </section>
+      </article>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -128,9 +130,9 @@ export default {
     }
   },
   methods: {
-    wsListener(event) {
-      if (this.message.type != "websocket") return;
-      this.wsMessage(message);
+    wsListener({ data }) {
+      if (data.type != "websocket") return;
+      this.wsMessage(data);
     },
     wsMessage(ev) {
       let msg = JSON.parse(ev.data);
@@ -311,6 +313,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.discusse {
+  text-align: center;
+  font-size: 80%;
+}
 .msg-box {
   display: flex;
   flex-direction: row;
