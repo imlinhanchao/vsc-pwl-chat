@@ -30,6 +30,7 @@ class Command
             'register',
             'textMode',
             'richMode',
+            'barrageColor',
             'reloadHook'
         ];
     }
@@ -48,6 +49,12 @@ class Command
                 vscode.window.showErrorMessage(`Hook 脚本载入失败：${(e as Error).message}`); 
             }
         } 
+    }
+
+    barrageColor() {
+      Utils.prompt('弹幕颜色', this.getConfig().barrageColor).then(color => {
+        vscode.workspace.getConfiguration().update('pwl-chat.barrageColor', color);
+      });
     }
 
     async init() {

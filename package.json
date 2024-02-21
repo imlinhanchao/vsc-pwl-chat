@@ -50,6 +50,10 @@
         "title": "摸鱼派: 图文模式(PWL Chatroom Rich Mode)"
       },
       {
+        "command": "pwl-chat.barrageColor",
+        "title": "摸鱼派: 弹幕颜色设置(PWL Chatroom Barrage Color)"
+      },
+      {
         "command": "pwl-chat.reloadHook",
         "title": "摸鱼派: 重载 Hook 脚本(PWL Chatroom Reload Hook)"
       }
@@ -69,6 +73,12 @@
             "完整显示模式，包含图片和红包内容",
             "仅显示文字，隐藏一切图片和大多数样式"
           ]
+        },
+        "pwl-chat.barrageColor": {
+          "type": "string",
+          "default": "#ffffff",
+          "markdownDescription": "弹幕颜色设置，支持十六进制颜色值。",
+          "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
         },
         "pwl-chat.hook": {
           "type": "string",

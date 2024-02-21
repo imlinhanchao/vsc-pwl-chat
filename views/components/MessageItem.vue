@@ -18,16 +18,15 @@
         {{ item.userNickname || item.userName }}
       </div>
       <RedpacketMsg :item="item" :isCurrent="item.userName == current.userName" @click="getsture => openRedpacket(item, getsture)"/>
-      <div class="msg-contain" v-if="!item.redpacket">
+      <div class="msg-contain" v-if="!item.redpacket" :style="{
+        color: item.barragerColor, 
+      }">
         <div
           class="arrow"
           v-if="item.content.replace(/\n/g, '').match(/>[^<]+?</g)"
         />
         <div
           class="msg-content md-style"
-          :style="{
-            color: item.barragerColor, 
-          }"
           v-html="formatContent(item.content)"
           v-if="item.content.replace(/\n/g, '').match(/>[^<]+?</g)"
         />

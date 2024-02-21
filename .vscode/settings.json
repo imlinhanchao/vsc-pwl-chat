@@ -8,5 +8,6 @@
     },
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off",
-    "files.autoSave": "off"
+    "files.autoSave": "off",
+    "pwl-chat.viewType": "图文模式"
 }
