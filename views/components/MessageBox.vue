@@ -28,6 +28,9 @@
             <button class="msg-control-item" @click.stop="faceHandle" title="发表情">
                 <i class="fa fa-smile-o"/>
             </button>
+            <button class="msg-control-item" @click.stop="sendBarage" title="发弹幕">
+                <i class="fa fa-comment" />
+            </button>
           </span>
           <input type="file" name="images" accept="image/*" ref="file" v-show="false" @change="uploadImg">
       </span>
@@ -239,6 +242,9 @@ export default {
         return false;
       }
     },
+    sendBarage() {
+      this.$root.request("barrager");
+    },
     imageHandle() {
         this.$refs['file'].click();
         this.controlMore = false;
@@ -349,7 +355,10 @@ export default {
           }
       }
     .msg-control-more {
-        position: absolute;
+      position: absolute;
+      .msg-control-item {
+        border-top: 1px solid var(--vscode-textLink-foreground);
+      }
     }
   }
 }

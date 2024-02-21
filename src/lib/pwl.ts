@@ -261,6 +261,55 @@ class PWL {
         return this.onlines;
     }
 
+    /**
+     * 发送一条弹幕
+     * @param msg 消息内容，支持 Markdown
+     * @param color 弹幕颜色
+     */
+    async barrage(msg:string, color:string='#ffffff') {
+      let rsp;
+      try {
+          rsp = await this.request({
+              url: `chat-room/send`,
+              method: 'post',
+              data: {
+                  content: `[barrager]{\"color\":\"${color}\",\"content\":\"${msg}\"}[/barrager]`,
+                  apiKey: this.token
+              },
+          });
+
+          return rsp;
+      } catch (e) {
+          throw e;
+      }
+    }
+  
+
+    async barragePay(): Promise<{ cost: number; unit: string }> {
+      let rsp;
+      try {
+        rsp = await this.request({
+          url: `cr?apiKey=${this.token}`,
+        });
+
+        let mat = rsp.match(/>发送弹幕每次将花费\s*<b>([-0-9]+)<\/b>\s*([^<]*?)<\/div>/);
+        if (mat) {
+          return {
+            cost: parseInt(mat[1]),
+            unit: mat[2]
+          };
+        }
+
+        return {
+          cost: 20,
+          unit: '积分'
+        };
+      }
+      catch (e) {
+          throw e;
+      }
+    }
+
     websocketInit(wsCallback:Function) {
         if (this.rws !== null) { this.rws.close(); }
         this.rws = new ReconnectingWebSocket(`wss://fishpi.cn/chat-room-channel?apiKey=${this.token}`, [], {
@@ -293,6 +342,15 @@ class PWL {
                 case 'revoke': {
                     data = msg.oId;
                     break;
+                }
+                case 'barrager': {
+                  let { barragerContent, userAvatarURL, userAvatarURL20, userNickname, barragerColor, userName, userAvatarURL210, userAvatarURL48 } = msg;
+                  data = { barragerContent, userAvatarURL, userAvatarURL20, userNickname, barragerColor, userName, userAvatarURL210, userAvatarURL48 };
+                  break;
+                }
+                case 'customMessage': {
+                  data = msg.message;
+                  break;
                 }
                 case 'msg': {
                     let { oId, time, userName, userNickname, userAvatarURL, content, md } = msg;
