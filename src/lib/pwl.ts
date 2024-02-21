@@ -284,6 +284,27 @@ class PWL {
       }
     }
   
+    /**
+     * 修改话题
+     * @param msg 内容
+     */
+    async setDiscusse(newDiscusse:string) {
+      let rsp;
+      try {
+          rsp = await this.request({
+              url: `chat-room/send`,
+              method: 'post',
+              data: {
+                  content: `[setdiscuss]${newDiscusse}[/setdiscuss]`,
+                  apiKey: this.token
+              },
+          });
+
+          return rsp;
+      } catch (e) {
+          throw e;
+      }
+    }
 
     async barragePay(): Promise<{ cost: number; unit: string }> {
       let rsp;
@@ -292,7 +313,7 @@ class PWL {
           url: `cr?apiKey=${this.token}`,
         });
 
-        let mat = rsp.match(/>发送弹幕每次将花费\s*<b>([-0-9]+)<\/b>\s*([^<]*?)<\/div>/);
+        let mat = rsp.data.match(/barragerCost">([-0-9]+)<\/span><\/b>\s*<span id="barragerUnit">([^<]*?)<\//);
         if (mat) {
           return {
             cost: parseInt(mat[1]),
@@ -306,7 +327,10 @@ class PWL {
         };
       }
       catch (e) {
-          throw e;
+        return {
+          cost: 20,
+          unit: '积分'
+        };
       }
     }
 

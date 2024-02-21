@@ -65,12 +65,15 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 					req.type = 'response';
 					this._view?.webview.postMessage(req);			
 					return;
-				case 'command':
-					if ((this._command as any)[req.data.cmd]) {
-						req.rsp = await (this._command as any)[req.data.cmd](req.data.data);
-						req.type = 'response';
-						this._view?.webview.postMessage(req);			
-					}
+        case 'discusse':
+          {
+            const discusse = await Utils.prompt(`修改话题需要16积分，将自动从账户中扣除；最大长度16字符，不合法字符将被自动过滤。`);
+            if (discusse) {
+              const rsp = await this._pwl.setDiscusse(discusse);
+              if (rsp.code !== 0) { Utils.showMessage({ type: 'warning', msg: rsp.msg }); }
+            }
+          }
+          return;
         case 'barrager':
           {
             const pay = await this._pwl.barragePay();
@@ -80,6 +83,14 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
               if (rsp.code !== 0) { Utils.showMessage({ type: 'warning', msg: rsp.msg }); }
             }
           }
+          return;
+				case 'command':
+					if ((this._command as any)[req.data.cmd]) {
+						req.rsp = await (this._command as any)[req.data.cmd](req.data.data);
+						req.type = 'response';
+						this._view?.webview.postMessage(req);			
+					}
+
 			}
 			if (!pwl || !pwl[req.type]) { return; }
 			req.rsp = await pwl[req.type](req.data);

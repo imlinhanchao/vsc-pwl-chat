@@ -1,7 +1,8 @@
 <template>
   <section>
     <section class="discusse" v-if="discusse">
-      <a href="javascript:void(0)" @click="message += `*\`# ${discusse} #\`*`">#{{discusse}}#</a> 
+      <a href="javascript:void(0)" @click="message += `*\`# ${discusse} #\`*`">#{{discusse}}#</a>
+      <a href="javascript:void(0)" @click="setDiscusse"><i class="fa fa-edit" /></a>
     </section>
     <div class="msg-box">
       <input ref="message"
@@ -242,8 +243,12 @@ export default {
         return false;
       }
     },
+    setDiscusse() {
+      this.$root.request("discusse");
+    },
     sendBarage() {
       this.$root.request("barrager");
+      this.controlMore = false;
     },
     imageHandle() {
         this.$refs['file'].click();
