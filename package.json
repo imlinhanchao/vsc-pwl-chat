@@ -2,7 +2,7 @@
   "name": "pwl-chat",
   "displayName": "摸鱼派聊天室",
   "description": "随时随地摸鱼聊天 https://fishpi.cn/",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "engines": {
     "vscode": "^1.62.0"
   },
@@ -17,11 +17,7 @@
     "不加班",
     "反内卷"
   ],
-  "activationEvents": [
-    "onView:pwl-chat.chatView",
-    "onCommand:pwl-chat.login",
-    "onCommand:pwl-chat.register"
-  ],
+  "activationEvents": [],
   "publisher": "hancel",
   "license": "MIT",
   "icon": "media/logo.png",

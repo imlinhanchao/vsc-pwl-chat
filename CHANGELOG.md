@@ -1,7 +1,10 @@
 # Change Log
 
-All notable changes to the "pwl-chat" extension will be documented in this file.
-
+## [0.0.21] - 2024-02-21
+- 支援弹幕功能；
+- 支援话题功能；
+- 支援进出消息显示；
+  
 ## [0.0.20] - 2023-06-26
 - 移除多余尾巴；
   
