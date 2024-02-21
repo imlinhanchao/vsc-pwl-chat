@@ -2,7 +2,7 @@
   <div
     class="msg-item"
     v-if="item.content"
-    :class="{ 'msg-current': item.userName == current.userName }"
+    :class="{ barrager: isBaggager, 'msg-current': item.userName == current.userName }"
   >
     <div ref="msg" :data-id="item.oId" class="msg-item-contain" @dblclick.stop="menuShow">
       <a class="msg-user"  target="_blank" :href="`https://fishpi.cn/member/${item.userName}`" :title="item.userName">
@@ -60,6 +60,9 @@ export default {
     }
   },
   computed: {
+    isBaggager() {
+      return !!this.item.barragerColor
+    },
   },
   methods: {
     getRedPacket(item) {
@@ -121,6 +124,41 @@ export default {
   display: flex;
   flex-direction: row;
   margin: 5px 0;
+  &.barrager {
+    background-color: var(--vscode-scrollbarSlider-background);
+    border-radius: 40px;
+    padding: 5px;
+    font-weight: bold;
+    box-shadow: 0 0 5px 1px var(--vscode-scrollbarSlider-background);
+    overflow: hidden;
+    transition: all .5s;
+    max-width: calc(95%);
+    display: inline-flex;
+    .msg-content {
+      background-color: transparent;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: calc(100%);
+    }
+    .arrow {
+        display: none;
+    }
+    .msg-avatar-box .msg-avatar {
+        margin: 0;
+    }
+    .msg-item-contain, .msg-contain {
+        display: inline-flex;
+        width: auto;
+        max-width: calc(100%);
+        height: 100%;
+        align-items: center;
+        &:hover {
+          .msg-menu-btn {
+            display: none;
+          }
+        }
+    }
+  }
 }
 
 .msg-item-contain {

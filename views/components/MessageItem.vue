@@ -1,8 +1,9 @@
 <template>
   <div
+    ref="msg-view"
     class="msg-item"
     v-if="item.content"
-    :class="{ 'msg-current': item.userName == current.userName }"
+    :class="{ barrager: isBaggager, 'msg-current': item.userName == current.userName }"
   >
     <div class="msg-avatar-box">
       <a target="_blank" :href="`https://fishpi.cn/member/${item.userName}`">
@@ -24,6 +25,9 @@
         />
         <div
           class="msg-content md-style"
+          :style="{
+            color: item.barragerColor, 
+          }"
           v-html="formatContent(item.content)"
           v-if="item.content.replace(/\n/g, '').match(/>[^<]+?</g)"
         />
@@ -85,6 +89,18 @@ export default {
     }
   },
   computed: {
+    isBaggager() {
+        return !!this.item.barragerColor
+    },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      if (this.isBaggager) {
+        setTimeout(() => {
+          this.$refs['msg-view'].classList.add('barrager-show');
+        }, 100);
+      }
+    })
   },
   methods: {
     getRedPacket(item) {
@@ -138,6 +154,60 @@ export default {
   display: flex;
   flex-direction: row;
   margin: 5px 0;
+
+  &.barrager {
+    background-color: var(--vscode-scrollbarSlider-background);
+    border-radius: 40px;
+    margin: 10px 5px;
+    font-weight: bold;
+    box-shadow: 0 0 5px 1px var(--vscode-scrollbarSlider-background);
+    overflow: hidden;
+    transition: all .5s;
+    height: 0;
+    opacity: 0;
+    width: 0%;
+    max-width: calc(95%);
+    display: inline-flex;
+    &.barrager-show {
+        opacity: 1;
+        height: 45px;
+        animation: shake 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both 0.2s;
+        width: auto;
+    }
+    .msg-content {
+        background-color: transparent;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: calc(100%);
+    }
+    .msg-user, .arrow {
+        display: none;
+    }
+    .msg-avatar-box .msg-avatar {
+        min-width: 40px;
+        width: 40px;
+        height: 40px;
+        margin: 0;
+    }
+    .msg-item-contain, .msg-contain {
+        display: inline-flex;
+        width: auto;
+        max-width: calc(100%);
+        height: 100%;
+        align-items: center;
+        &:hover {
+          .msg-menu-btn {
+            display: none;
+          }
+        }
+    }
+    &.msg-current {
+        flex-direction: row;
+        .msg-contain {
+            flex-direction: row;
+        }
+    }
+  }
 }
 
 .msg-item-contain {
@@ -319,6 +389,27 @@ export default {
   }
   66.666%{
     background-position: 0 0;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-8px);
+  }
+  40% {
+    transform: translateY(0);
+  }
+  60% {
+    transform: translateY(-4px);
+  }
+  80% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-2px);
   }
 }
 </style>

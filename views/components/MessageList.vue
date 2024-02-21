@@ -4,32 +4,37 @@
       v-for="(item, i) in content"
       v-bind:key="(item.type || 'msg') + '_' + item.oId + (item.whoGot || '')"
     >
-      <MessageItem v-if="!isTextMode"
-        @redpacket="showRedpacket(item, $event)"
-        @msg="$emit('msg', $event)" 
-        @face="$emit('face', $event)"
-        @quote="$emit('quote', $event)"
-        :current="current"
-        :item.sync="item"
-        :contextmenuId.sync="contextmenuId"
-        :contextmenuPos.sync="contextmenuPos"
-        @menu="OnMenu"
-        :plusOne=" item.dbUser &&
-          item.dbUser.length > 0 && 
-          item.oId == firstMsg.oId
-        "
-      ></MessageItem>
-      <MessageText v-if="isTextMode"
-        @redpacket="showRedpacket(item, $event)"
-        @msg="$emit('msg', $event)" 
-        @face="$emit('face', $event)"
-        @quote="$emit('quote', $event)"
-        :current="current"
-        :item.sync="item"
-        :contextmenuId.sync="contextmenuId"
-        :contextmenuPos.sync="contextmenuPos"
-        @menu="OnMenu"
-      ></MessageText>
+      <section v-if="item.type !== 'customMessage'">
+        <MessageItem v-if="!isTextMode"
+          @redpacket="showRedpacket(item, $event)"
+          @msg="$emit('msg', $event)" 
+          @face="$emit('face', $event)"
+          @quote="$emit('quote', $event)"
+          :current="current"
+          :item.sync="item"
+          :contextmenuId.sync="contextmenuId"
+          :contextmenuPos.sync="contextmenuPos"
+          @menu="OnMenu"
+          :plusOne=" item.dbUser &&
+            item.dbUser.length > 0 && 
+            item.oId == firstMsg.oId
+          "
+        ></MessageItem>
+        <MessageText v-if="isTextMode"
+          @redpacket="showRedpacket(item, $event)"
+          @msg="$emit('msg', $event)" 
+          @face="$emit('face', $event)"
+          @quote="$emit('quote', $event)"
+          :current="current"
+          :item.sync="item"
+          :contextmenuId.sync="contextmenuId"
+          :contextmenuPos.sync="contextmenuPos"
+          @menu="OnMenu"
+        ></MessageText>
+      </section>
+      <section v-else>
+        <CustomMsg :item="item" />
+      </section>
     </div>
     <div class="msg-more" @click="load(page + 1)" v-if="content.length < 1999">
       <i class="fa fa-caret-down" v-if="!loading" />
@@ -41,6 +46,7 @@
 <script>
 import MessageItem from "./MessageItem.vue";
 import MessageText from "./MessageText.vue";
+import CustomMsg from "./CustomMsg.vue";
 
 export default {
   name: "MessageList",
@@ -53,7 +59,7 @@ export default {
     },
   },
   components: {
-    MessageItem, MessageText,
+    MessageItem, MessageText, CustomMsg
   },
   data() {
     return {
@@ -158,6 +164,23 @@ export default {
             break;
           }
           break;
+        case "customMessage":
+          msg.oId = new Date().getTime();
+          this.content.splice(0, 0, msg);
+          break;
+        case'barrager': {
+          msg = {
+            type: 'barrager',
+            oId: new Date().getTime(),
+            content: msg.barragerContent,
+            userName: msg.userName,
+            userNickname: msg.userNickname,
+            userAvatarURL: msg.userAvatarURL,
+            barragerColor: msg.barragerColor,
+          }
+          this.content.splice(0, 0, msg);
+          break;
+        }
         case "msg": //消息
         case "redPacketStatus":
           if (msg.type == "msg") msg.redpacket = this.getRedPacket(msg);

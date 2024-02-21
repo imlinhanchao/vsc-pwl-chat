@@ -175,12 +175,13 @@ function confirm(message: string, options: string[]) : Promise<string|undefined>
     });
 }
 
-function prompt(message: string, defaultVal: string = '', password: boolean = false) : Promise<string|undefined> {
+function prompt(message: string, defaultVal: string = '', password: boolean = false, validateInput?: (value: string) => string | undefined | null | Thenable<string | undefined | null>) : Promise<string|undefined> {
     return new Promise((resolve, reject) => {
         return vscode.window.showInputBox({
             value: defaultVal,
             prompt: message,
-            password
+            password,
+            validateInput
         }).then(resolve);
     });
 }
@@ -260,7 +261,7 @@ async function playMusic(url:string, loop:boolean, autoplay: boolean) {
     let buffer = await fetchBuffer(url);
     let tmpPath = path.resolve(tmpdir(), hash(buffer) + path.extname(new URL(url).pathname
     ));
-    if(!fs.existsSync(tmpPath)) fs.writeFileSync(tmpPath, buffer);
+    if(!fs.existsSync(tmpPath)) {fs.writeFileSync(tmpPath, buffer);}
     return await soundPlay(tmpPath);
 }
 
