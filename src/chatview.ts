@@ -71,6 +71,15 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 						req.type = 'response';
 						this._view?.webview.postMessage(req);			
 					}
+        case 'barrager':
+          {
+            const pay = await this._pwl.barragePay();
+            const barrager = await Utils.prompt(`发送弹幕每次将花费 ${pay.cost} ${pay.unit}；最大长度32字符。`);
+            if (barrager) {
+              const rsp = await this._pwl.barrage(barrager);
+              if (rsp.code !== 0) { Utils.showMessage({ type: 'warning', msg: rsp.msg }); }
+            }
+          }
 			}
 			if (!pwl || !pwl[req.type]) { return; }
 			req.rsp = await pwl[req.type](req.data);
