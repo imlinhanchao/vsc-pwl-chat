@@ -208,7 +208,10 @@ export default {
     getRedPacket(item) {
       try {
         let data = JSON.parse(item.content);
-        if (data.msgType != "redPacket") return false;
+        if (data.msgType != "redPacket") {
+          item.content = '[不支持消息类型，请到<a href="https://fishpi.cn" target="_blank">网页版查看</a>]';
+          return false;
+        }
         if (data.recivers) data.recivers = JSON.parse(data.recivers)
         else data.recivers = []
         data.empty = data.got == data.count;

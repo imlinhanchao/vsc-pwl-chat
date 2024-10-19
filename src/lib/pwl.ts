@@ -224,6 +224,7 @@ class PWL {
     async upload(files:Array<string>) {
         let data = new FormData();
         files.forEach(f => data.append('file[]', fs.readFileSync(f), path.basename(f)));
+        data.append('apiKey', this.token);
 
         let rsp;
         try {
@@ -383,6 +384,8 @@ class PWL {
                         if (msgType === 'redPacket') {
                             data = { msg, recivers, money, count, type, got, who };
                             break;
+                        } else {
+                            content = '[不支持消息类型，请到<a href="https://fishpi.cn" target="_blank">网页版查看</a>]';
                         }
                     } catch (e) {}
                     data = { oId, time, userName, userNickname, userAvatarURL, content, md };
