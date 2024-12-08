@@ -346,7 +346,7 @@ class PWL {
                 url: `chat-room/node/get?apiKey=${this.token}`,
             });
 
-            return rsp.data;
+            return rsp.data.data;
         } catch (e) {
             throw e;
         }
