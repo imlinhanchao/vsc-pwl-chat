@@ -335,9 +335,29 @@ class PWL {
       }
     }
 
-    websocketInit(wsCallback:Function) {
+    /**
+     * 获取聊天室节点
+     * @returns 返回节点地址
+     */
+    async getNode():Promise<string> {
+        let rsp;
+        try {
+            rsp = await this.request({
+                url: `chat-room/node/get?apiKey=${this.token}`,
+            });
+
+            return rsp.data;
+        } catch (e) {
+            throw e;
+        }
+    }
+    
+
+    async websocketInit(wsCallback:Function, url='') {
         if (this.rws !== null) { this.rws.close(); }
-        this.rws = new ReconnectingWebSocket(`wss://fishpi.cn/chat-room-channel?apiKey=${this.token}`, [], {
+        if (!url && this.token) { url = await this.getNode().catch(() => `wss://fishpi.cn/chat-room-channel?apiKey=${this.token}`); }
+        if (!url) { url = `wss://fishpi.cn/chat-room-channel?apiKey=${this.token}`; }
+        this.rws = new ReconnectingWebSocket(url, [], {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             WebSocket: WS,
             connectionTimeout: 10000
