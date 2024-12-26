@@ -356,7 +356,7 @@ class PWL {
     async websocketInit(wsCallback:Function, url='') {
         if (this.rws !== null) { this.rws.close(); }
         if (!url && this.token) { url = await this.getNode().catch(() => `wss://fishpi.cn/chat-room-channel?apiKey=${this.token}`); }
-        if (!url) { url = `wss://fishpi.cn/chat-room-channel?apiKey=${this.token}`; }
+        if (!url) { return; }
         this.rws = new ReconnectingWebSocket(url, [], {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             WebSocket: WS,

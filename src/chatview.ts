@@ -89,7 +89,12 @@ class ChatViewProvider implements vscode.WebviewViewProvider {
 					if ((this._command as any)[req.data.cmd]) {
 						req.rsp = await (this._command as any)[req.data.cmd](req.data.data);
 						req.type = 'response';
-						this._view?.webview.postMessage(req);			
+						this._view?.webview.postMessage(req);
+						if (req.data.cmd === 'login') { 
+							pwl.websocketInit((ev:MessageEvent) => {
+								this._view?.webview.postMessage({ type: 'websocket', data: ev.data});
+							});
+						 }	
 					}
 
 			}
