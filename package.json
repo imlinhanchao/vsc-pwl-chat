@@ -114,8 +114,8 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "serve": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build"
   },
   "devDependencies": {
     "@types/audio-play": "^2.3.0",
